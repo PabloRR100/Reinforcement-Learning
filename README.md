@@ -13,5 +13,5 @@ This second <a href='http://www.pabloruizruiz10.com/resources/RL/RL-Problem-Exam
 
 ## Exercises Index (TBE)
 
-- 5. Monte Carlo Methods  
-&emsp; - [5.1. Blackjack Game](https://github.com/PabloRR100/Reinforcement-Learning/blob/master/Exercises/Monte%20Carlo/5.1_Monte_Carlo_Prediction_Blackjack_Game/5.1_Monte_Carlo_Prediction_Blackjack_Game.md) 
+* 5 - Monte Carlo Methods  
+&emsp;* [5.1 - Blackjack Game](https://github.com/PabloRR100/Reinforcement-Learning/blob/master/Exercises/Monte%20Carlo/5.1_Monte_Carlo_Prediction_Blackjack_Game/5.1_Monte_Carlo_Prediction_Blackjack_Game.md) 
