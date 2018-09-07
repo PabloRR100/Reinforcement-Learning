@@ -150,8 +150,8 @@ def update_table(n):
     # Update values
     global Q
     print('Updating table ')
-#    new_table = draw_Table(Q)
-    new_table = draw_Table(update_Q(Q))
+    new_table = draw_Table(Q)
+#    new_table = draw_Table(update_Q(Q))
     #time.sleep(1 * np.exp(-n))
     time.sleep(1)
     return new_table

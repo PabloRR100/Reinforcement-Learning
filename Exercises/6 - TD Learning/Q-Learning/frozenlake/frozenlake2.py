@@ -15,7 +15,8 @@ Intuitive video about sparse rewards:
 import gym
 env = gym.make('FrozenLake-v0')
 
-EPISODES = 20
+EPISODES = 200
+
 total_states = env.observation_space.n
 actions_per_state = env.action_space.n
 print('Number of states: ', total_states)
@@ -28,6 +29,7 @@ world = [['S',' ',' ',' '],
          [' ',' ',' ','H'],
          [' ',' ',' ','H'],
          ['H',' ',' ','G']]
+
 
 # Helper function to track movement
 def draw_world(w, s):
@@ -66,28 +68,34 @@ rList = []
     
 plt.ion()
 plt.figure(figsize = (10,10))
+previous = draw_Table(Q)
+
 for i in range(EPISODES):
     
-    print('Episode [{}/{}]'.format(i,EPISODES))
-    print('Current Q-Table')
-
-    # if i == 0: time.sleep(5) # time to plot the stating Q-Table
+    j = 0
     s = env.reset()
+    
+    if i == 0: 
+        time.sleep(2)
+        print('Starting...')
+            
+    print('Episode [{}/{}]'.format(i,EPISODES))
     
     rAll = 0
     end_state = False
-    j = 0
     
     while j < 10:
         
         j+=1
+        exp = np.exp(-j*(i+1))
+        print(exp)
         
         # Choose action greedily
         a = np.argmax(q[s,:] + np.random.randn(1, env.action_space.n) * (1./ (i+1)))
         
         # Collect reward and reach new state
         s1,r,end_state,inf = env.step(a)
-        # print(actions[a], s1, states[s1],r)
+        print(actions[a], s1, states[s1],r)
         
         # Encourage a little bit for testing
         r += 1
@@ -98,17 +106,18 @@ for i in range(EPISODES):
         set_Q(q)
         
         # Update the new Q-Value
-        if 'previous' in globals(): del previous
+        if 'previous' in globals(): 
+            previous.axes.clear()
         previous = draw_Table(Q)
-        plt.pause(1)
+        plt.pause(1 * exp)
         
         rAll += r
         s = s1
         
         if end_state == True: 
             a = 5
-            break
-    
+            break        
+
     rList.append(rAll)
 
 plt.ioff()
