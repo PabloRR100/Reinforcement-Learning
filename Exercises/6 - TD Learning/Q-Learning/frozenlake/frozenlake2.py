@@ -4,6 +4,7 @@ import numpy as np
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
+from matplotlib import animation
 
 '''
 Intuitive video about sparse rewards:
@@ -50,7 +51,7 @@ Q.set_index('State', inplace=True)
 # Helper functions to draw, update and get values of the table
 def draw_Table(Q):
     table = sns.heatmap(Q, cmap='Blues', annot=True, linewidths=.5, cbar=False, 
-                linecolor='black', square=True).set_title('Q-Table')
+                linecolor='black', square=True)
     return table  
 
 def set_Q(q): 
@@ -67,7 +68,7 @@ rList = []
 
     
 plt.ion()
-plt.figure(figsize = (10,10))
+plt.figure(figsize = (10,10)).suptitle('Q-Table')
 previous = draw_Table(Q)
 
 for i in range(EPISODES):
@@ -84,18 +85,16 @@ for i in range(EPISODES):
     rAll = 0
     end_state = False
     
-    while j < 10:
+    while j < 99:
         
         j+=1
         exp = np.exp(-j*(i+1))
-        print(exp)
         
         # Choose action greedily
         a = np.argmax(q[s,:] + np.random.randn(1, env.action_space.n) * (1./ (i+1)))
         
         # Collect reward and reach new state
         s1,r,end_state,inf = env.step(a)
-        print(actions[a], s1, states[s1],r)
         
         # Encourage a little bit for testing
         r += 1
@@ -108,8 +107,12 @@ for i in range(EPISODES):
         # Update the new Q-Value
         if 'previous' in globals(): 
             previous.axes.clear()
-        previous = draw_Table(Q)
+        previous = draw_Table(Q).set_title('Episode: {}'.format(i+1))
         plt.pause(1 * exp)
+        
+        # Rules to save fig        
+        if i < 10 or ((not i < 10 and i % 10 ==0) and j == 0):
+            plt.savefig('imgs/episode_{}_iter{}'.format(i,j))
         
         rAll += r
         s = s1
@@ -122,14 +125,3 @@ for i in range(EPISODES):
 
 plt.ioff()
 plt.show()
-
-
-## Browser visualization
-#
-#def update_table(n):   
-#    # Update values
-#    new_table = draw_Table(get_Q())
-##    time.sleep(m * np.exp(-n))
-#    return new_table
-#    
-    
