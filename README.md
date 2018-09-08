@@ -16,3 +16,8 @@ This second <a href='http://www.pabloruizruiz10.com/resources/RL/RL-Problem-Exam
 * 5 - Monte Carlo Methods  
 &emsp;* [5.1 - MC Prediciton Problem - Blackjack Game](http://www.pabloruizruiz10.com/resources/RL/Exercises/5.-MonteCarlo/5.1_Monte_Carlo_Prediction_Blackjack_Game.html)  
 &emsp;* [5.2 - MC Control Problem - Blackjack Game](http://www.pabloruizruiz10.com/resources/RL/Exercises/5.-MonteCarlo/5.2_Monte_Carlo_Control_Blackjack_Game.html)
+
+
+* 6 - Temporal Difference Methods
+
+&emsp;* [6.1 - Q-Learning - Frozen Lake Demo](http://www.pabloruizruiz10.com/resources/RL/Exercises/5.-MonteCarlo/5.2_Monte_Carlo_Control_Blackjack_Game.html)
