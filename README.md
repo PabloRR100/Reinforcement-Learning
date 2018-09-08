@@ -18,6 +18,6 @@ This second <a href='http://www.pabloruizruiz10.com/resources/RL/RL-Problem-Exam
 &emsp;* [5.2 - MC Control Problem - Blackjack Game](http://www.pabloruizruiz10.com/resources/RL/Exercises/5.-MonteCarlo/5.2_Monte_Carlo_Control_Blackjack_Game.html)
 
 
-* 6 - Temporal Difference Methods
-
-&emsp;* [6.1 - Q-Learning - Frozen Lake Demo](http://www.pabloruizruiz10.com/resources/RL/Exercises/5.-MonteCarlo/5.2_Monte_Carlo_Control_Blackjack_Game.html)
+* 6 - Temporal Difference Methods. 
+  
+&emsp; * [6.1 - Q-Learning - Frozen Lake Demo](http://www.pabloruizruiz10.com/resources/RL/Exercises/5.-MonteCarlo/5.2_Monte_Carlo_Control_Blackjack_Game.html)
