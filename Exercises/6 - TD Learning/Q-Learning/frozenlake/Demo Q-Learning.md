@@ -1,8 +1,11 @@
 
+
+```python
 import numpy as np
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
+%matplotlib inline 
 
 '''
 Intuitive video about sparse rewards:
@@ -36,8 +39,15 @@ def draw_world(w, s):
     j = s % 4
     w[i,j] = 'X'
     print(w)
+```
+
+    Number of states:  16
+    Number of actions per state:  4
+    Number of episodes to run:  200
 
 
+
+```python
 # Q-Table
 
 q = np.zeros((total_states, actions_per_state), dtype='float')
@@ -52,12 +62,14 @@ def draw_Table(Q):
                 linecolor='black', square=True)
     return table  
 
+# Helper function to sincronize the pandas DataFrame (Q) with the numpy array (q)
 def set_Q(q): 
     global Q
     Q.iloc[:,:] = q
+```
 
 
-
+```python
 # Q-Learning Algorithm
 
 lr = .8
@@ -73,10 +85,7 @@ for i in range(EPISODES):
     
     j = 0
     s = env.reset()
-    
-    if i == 0: 
-        print('Starting...')
-            
+
     print('Episode [{}/{}]'.format(i,EPISODES))
     
     rAll = 0
@@ -85,7 +94,8 @@ for i in range(EPISODES):
     while j < 99:
         
         j+=1
-        exp = np.exp(-j*(i+1))
+        # Print slowly the first steps and then go fast
+        exp = np.exp(-j*(i+1)) 
         
         # Choose action greedily
         a = np.argmax(q[s,:] + np.random.randn(1, env.action_space.n) * (1./ (i+1)))
@@ -93,32 +103,47 @@ for i in range(EPISODES):
         # Collect reward and reach new state
         s1,r,end_state,inf = env.step(a)
         
-        # Encourage a little bit for testing
+        '''
+        In order to make it visual, we are giving a reward here just by making one action.
+        If not, the values of Q will not be updated until the agent actually reached goal.
+        Therefore, r+=1 should be remove in the real implementation.
+        '''
         r += 1
         
         # Update Q-Table with new knowledge
         q[s,a] = round(q[s,a] + lr*(r + y*np.max(q[s1,:]) - q[s,a]), 2)
         
+        # Update the dataframe. We are playing with the numpy array for easy the notation
         set_Q(q)
         
-        # Update the new Q-Value
+        # Update the new Q-Table visualization
         if 'previous' in globals(): 
             previous.axes.clear()
         previous = draw_Table(Q).set_title('Episode: {}'.format(i+1))
         plt.pause(1 * exp)
         
-        # Rules to save fig        
+        # Rules to save figs to make later GIF        
         if i < 10 or ((not i < 10 and i % 10 ==0) and j == 0):
             plt.savefig('imgs/episode_{}_iter{}'.format(i,j))
         
+        # Accumulate reward
         rAll += r
+        
+        # Move to next state
         s = s1
         
         if end_state == True: 
-            a = 5
             break        
 
     rList.append(rAll)
 
 plt.ioff()
 plt.show()
+```
+
+
+```python
+# Then I created a GIF with the images generated:
+```
+
+![gif](./imgs/output.gif)

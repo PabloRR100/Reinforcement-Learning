@@ -71,7 +71,6 @@ def update_Q(Q):
     for i in range(len(Q)):
         for j in range(1, len(Q.columns)):        
             Q.iloc[i,j] += np.random.choice([0,1,2])
-    print(Q)
     return Q
 
 
@@ -79,69 +78,68 @@ def update_Q(Q):
 
 app.layout = html.Div([
         html.H1(children='Frozen Lake: Q-Learning Demo'),
-        html.P(id='placeholder'),
+
         dcc.Graph(id='table', figure=draw_Table(Q)),
-        #dcc.Interval(id='time', interval=1*10e6, n_intervals=0),
-        dcc.Interval(id='time2', interval=1*1000, n_intervals=0),
+        dcc.Interval(id='time', interval=1*10e6, n_intervals=0),
+        
+        # Hidden div inside the app that stores the intermediate value
+        html.Div(id='placeholder', style={'display': 'none'})
         ]
     )
 
-#
-## Q-Learning Algorithm
-#@app.callback(Output(component_id = 'placeholder', component_property='hidden'),
-#              [Input(component_id = 'time', component_property='n_intervals')])    
-#def algorithm(n):
-#    
-#    global q
-#    global Q
-#    lr = .8
-#    y = .9
-#    rList = []
-#    
-#    print('Running episodes')
-#    for i in range(EPISODES):
-#    
-#        print('Episode [{}/{}]'.format(i,EPISODES))
-#        print('Current Q-Table')
-#        print(Q)
-#        
-#        # if i == 0: time.sleep(5) # time to plot the stating Q-Table
-#        s = env.reset()
-#        
-#        rAll = 0
-#        end_state = False
-#        j = 0
-#        
-#        while j < 99:
-#            
-#            j+=1
-#            
-#            time.sleep(1 * np.exp(-j))
-#            
-#            # Choose action greedily
-#            a = np.argmax(q[s,:] + np.random.randn(1, env.action_space.n) * (1./ (i+1)))
-#            
-#            # Collect reward and reach new state
-#            s1,r,end_state,inf = env.step(a)
-#            # print(actions[a], s1, states[s1],r)
-#            
-#            # Encourage a little bit for testing
-#            r += 1
-#            
-#            # Update Q-Table with new knowledge
-#            q[s,a] = round(q[s,a] + lr*(r + y*np.max(q[s1,:]) - q[s,a]), 2)
-#            # print(inf)
-#            
-#            set_Q(q)
-#            
-#            rAll += r
-#            s = s1
-#            
-#            if end_state == True: 
-#                a = 5
-#                break
-#    
-#        rList.append(rAll)
+
+# Q-Learning Algorithm
+@app.callback(Output('placeholder','children'),[Input('time','n_intervals')])    
+def algorithm(n):
+    
+    lr = .8
+    y = .9
+    rList = []
+    
+    print('Running episodes')
+    for i in range(EPISODES):
+    
+        print('Episode [{}/{}]'.format(i,EPISODES))
+        print('Current Q-Table')
+        print(Q)
+        
+        # if i == 0: time.sleep(5) # time to plot the stating Q-Table
+        s = env.reset()
+        
+        rAll = 0
+        end_state = False
+        j = 0
+        
+        while j < 99:
+            
+            j+=1
+            
+            time.sleep(1 * np.exp(-j))
+            
+            # Choose action greedily
+            a = np.argmax(q[s,:] + np.random.randn(1, env.action_space.n) * (1./ (i+1)))
+            
+            # Collect reward and reach new state
+            s1,r,end_state,inf = env.step(a)
+            # print(actions[a], s1, states[s1],r)
+            
+            # Encourage a little bit for testing
+            r += 1
+            
+            # Update Q-Table with new knowledge
+            q[s,a] = round(q[s,a] + lr*(r + y*np.max(q[s1,:]) - q[s,a]), 2)
+            # print(inf)
+            
+            set_Q(q)
+            
+            rAll += r
+            s = s1
+            
+            if end_state == True: 
+                a = 5
+                break
+    
+        rList.append(rAll)
         
 
 # Timer for the Visualization Update
@@ -151,8 +149,8 @@ def update_table(n):
     # Update values
     global Q
     print('Updating table ')
-#    new_table = draw_Table(Q)
-    new_table = draw_Table(update_Q(Q))
+    new_table = draw_Table(Q)
+#    new_table = draw_Table(update_Q(Q))
     #time.sleep(1 * np.exp(-n))
     time.sleep(1)
     return new_table
