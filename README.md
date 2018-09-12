@@ -20,3 +20,5 @@ This second <a href='http://www.pabloruizruiz10.com/resources/RL/RL-Problem-Exam
 
 * 6 - Temporal Difference Methods   
 &emsp;* [6.1 - Q-Learning - Frozen Lake Demo](https://github.com/PabloRR100/Reinforcement-Learning/blob/master/Exercises/6%20-%20TD%20Learning/Q-Learning/frozenlake/Demo%20Q-Learning.md)
+
+&emsp;* [6.1 - Comparison of TD Control Methods on CliffWalking Environment](https://github.com/PabloRR100/Reinforcement-Learning/blob/master/Exercises/6%20-%20TD%20Learning/CliffWalking/TD_Cliff_Walking_Mardown/TD_Cliff_Walking.md)
