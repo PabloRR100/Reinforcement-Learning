@@ -82,7 +82,7 @@ agent
 # --------
 
 @timeit
-def train(EPISODES, TIMESTEPS, eps_0, eps_F, eps_decay):
+def train(agent, EPISODES, TIMESTEPS, eps_0, eps_F, eps_decay):
     eps = eps_0
     episode_scores = list()
     last_scores = deque(maxlen=100)
@@ -133,6 +133,7 @@ def train(EPISODES, TIMESTEPS, eps_0, eps_F, eps_decay):
         monitor(e, last_scores)
         if solved(e,score):
             torch.save(agent.qnetwork_local.state_dict(), 'checkpoint.pkl')
+            break
         
     return episode_scores
     
@@ -147,7 +148,16 @@ scores = train(EPISODES, TIMESTEPS, eps_0, eps_F, eps_decay)
 # -----------------
 
 import seaborn as sns
-sns.set('dark')
+import matplotlib.pyplot as plt
+
+#sns.set_style('darkgrid')
+sns.set()
+fake = np.random.randn(1000).tolist()
+
+plt.figure()
+sns.lineplot(range(len(fake)), fake)
+plt.axhline(y=0.95, color='red')
+plt.show()
 
 
 # Observe Trained Agent on the Environment
