@@ -164,9 +164,11 @@ plt.show()
 # Observe Trained Agent on the Environment
 # ----------------------------------------
 
+model_path = './models_backups/DQN_agent_checkpoint.pkl'
+
 # Load the brain
-agent = DQAgent
-agent.qnetwork_local.load_state_dict(torch.load('checkpoint.pth'))
+agent2 = DQAgent('DQN_agent', state_size, action_size, seed, h_layers, LR, BS, BFS, GAMMA, TAU, UE)
+agent2.qnetwork_local.load_state_dict(torch.load(model_path, map_location='cpu'))
 
 for i in range(5):
     
