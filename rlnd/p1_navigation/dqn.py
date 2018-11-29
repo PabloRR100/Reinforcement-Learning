@@ -125,7 +125,7 @@ class DQAgent():
         # Brain: 2 DQNetworks - stimated and fixed targets
         self.qnetwork_local = DQNet(state_size, action_size, seed, h_layers).to(self.device)
         self.qnetwork_target = DQNet(state_size, action_size, seed, h_layers).to(self.device)
-        self.optimizer = optim.Adam(self.qnetwork_local.parameters(), lr=self.lr)
+        self.optimizer = optim.Adam(self.qnetwork_local.parameters(o), lr=self.lr)
 
         # Memory: Replay buffer
         self.memory = ReplayBuffer(action_size, self.buffer_size, self.batch_size, self.seed, self.device)
@@ -224,7 +224,7 @@ class DoubleDQAgent(DQAgent):
         y_pred = Q.gather(1, actions)            
         
         # Calculate TD-Error
-        loss = self.criterion(y, y_pred)
+        loss = self.criterion(y_pred, y)
         loss.backward()
         self.optimizer.step()
         self.soft_update(self.qnetwork_local, self.qnetwork_target, self.tau)

@@ -8,6 +8,7 @@ Navigation
 """
 
 import torch
+import pickle
 import numpy as np
 from utils import timeit
 from collections import deque
@@ -138,50 +139,52 @@ def train(agent, EPISODES, TIMESTEPS, eps_0, eps_F, eps_decay):
         
     return episode_scores
     
-# We don't see agents while training
-env_info = env.reset(train_mode=True)[brain_name]
-state = env_info.vector_observations[0]
-
-scores[agent.name] = train(EPISODES, TIMESTEPS, eps_0, eps_F, eps_decay)
-
-
-# Training Analysis
-# -----------------
-
-import seaborn as sns
-import matplotlib.pyplot as plt
-
-#sns.set_style('darkgrid')
-sns.set()
-fake = np.random.randn(1000).tolist()
-
-plt.figure()
-sns.lineplot(range(len(scores)), scores)
-plt.axhline(y=SOLVED, color='red')
-plt.show()
-
-
-# Observe Trained Agent on the Environment
-# ----------------------------------------
-
-model_path = './models_backups/DQN_agent_checkpoint.pkl'
-
-# Load the brain
-agent2 = DQAgent('DQN_agent', state_size, action_size, seed, h_layers, LR, BS, BFS, GAMMA, TAU, UE)
-agent2.qnetwork_local.load_state_dict(torch.load(model_path, map_location='cpu'))
-
-for i in range(5):
-    
-    env_info = env.reset(train_mode=False)[brain_name]
-    state = env_info.vector_observations[0]
-    
-    for j in range(200):
-        action = agent.act(state).astype(int)
-        env_info = env.step(action)[brain_name]
-        state = env_info.vector_observations[0]  
-        done = env_info.local_done[0]
-        if done:
-            break
+## We don't see agents while training
+#env_info = env.reset(train_mode=True)[brain_name]
+#state = env_info.vector_observations[0]
+#
+#scores[agent.name] = train(EPISODES, TIMESTEPS, eps_0, eps_F, eps_decay)
+#
+#
+## Training Analysis
+## -----------------
+#
+#import seaborn as sns
+#import matplotlib.pyplot as plt
+#
+#sns.set()
+#
+#plt.figure()
+#sns.lineplot(range(len(scores[agent.name])), scores[agent.name])
+#plt.axhline(y=SOLVED, color='red')
+#plt.show()
+#
+#
+## Observe Trained Agent on the Environment
+## ----------------------------------------
+#
+#model_path = './models_backups/DQN_agent_checkpoint.pkl'
+#
+## Load the brain
+#agent2 = DQAgent('DQN_Agent', state_size, action_size, seed, h_layers, LR, BS, BFS, GAMMA, TAU, UE)
+#if cuda: agent2.qnetwork_local.load_state_dict(torch.load(model_path))
+#else: agent2.qnetwork_local.load_state_dict(torch.load(model_path, map_location='cpu'))
+#
+#with open('./results_backups/{}.pkl'.format(agent.name), 'rb') as input:
+#    scores = pickle.load(input)
+#
+#for i in range(5):
+#    
+#    env_info = env.reset(train_mode=False)[brain_name]
+#    state = env_info.vector_observations[0]
+#    
+#    for j in range(200):
+#        action = agent.act(state).astype(int)
+#        env_info = env.step(action)[brain_name]
+#        state = env_info.vector_observations[0]  
+#        done = env_info.local_done[0]
+#        if done:
+#            break
     
     
     
