@@ -125,7 +125,7 @@ class DQAgent():
         # Brain: 2 DQNetworks - stimated and fixed targets
         self.qnetwork_local = DQNet(state_size, action_size, seed, h_layers).to(self.device)
         self.qnetwork_target = DQNet(state_size, action_size, seed, h_layers).to(self.device)
-        self.optimizer = optim.Adam(self.qnetwork_local.parameters(o), lr=self.lr)
+        self.optimizer = optim.Adam(self.qnetwork_local.parameters(), lr=self.lr)
 
         # Memory: Replay buffer
         self.memory = ReplayBuffer(action_size, self.buffer_size, self.batch_size, self.seed, self.device)

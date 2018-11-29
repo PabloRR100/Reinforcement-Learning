@@ -13,6 +13,10 @@ import numpy as np
 from utils import timeit
 from collections import deque
 
+cuda = True if torch.cuda.is_available() else False
+gpus = True if torch.cuda.device_count() > 1 else False
+
+
 # Load World
 from unityagents import UnityEnvironment
 env = UnityEnvironment(file_name = 'Banana.app')
@@ -145,48 +149,7 @@ def train(agent, EPISODES, TIMESTEPS, eps_0, eps_F, eps_decay):
 #
 #scores[agent.name] = train(EPISODES, TIMESTEPS, eps_0, eps_F, eps_decay)
 #
-#
-## Training Analysis
-## -----------------
-#
-#import seaborn as sns
-#import matplotlib.pyplot as plt
-#
-#sns.set()
-#
-#plt.figure()
-#sns.lineplot(range(len(scores[agent.name])), scores[agent.name])
-#plt.axhline(y=SOLVED, color='red')
-#plt.show()
-#
-#
-## Observe Trained Agent on the Environment
-## ----------------------------------------
-#
-#model_path = './models_backups/DQN_agent_checkpoint.pkl'
-#
-## Load the brain
-#agent2 = DQAgent('DQN_Agent', state_size, action_size, seed, h_layers, LR, BS, BFS, GAMMA, TAU, UE)
-#if cuda: agent2.qnetwork_local.load_state_dict(torch.load(model_path))
-#else: agent2.qnetwork_local.load_state_dict(torch.load(model_path, map_location='cpu'))
-#
-#with open('./results_backups/{}.pkl'.format(agent.name), 'rb') as input:
-#    scores = pickle.load(input)
-#
-#for i in range(5):
 #    
-#    env_info = env.reset(train_mode=False)[brain_name]
-#    state = env_info.vector_observations[0]
-#    
-#    for j in range(200):
-#        action = agent.act(state).astype(int)
-#        env_info = env.step(action)[brain_name]
-#        state = env_info.vector_observations[0]  
-#        done = env_info.local_done[0]
-#        if done:
-#            break
-    
-    
     
 # Double DQN
 # ----------
@@ -213,7 +176,54 @@ scores[double_agent.name] = train(double_agent, EPISODES, TIMESTEPS, eps_0, eps_
 
 
 
+# Training Analysis
+# -----------------
 
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+sns.set()
+
+plt.figure()
+sns.lineplot(range(len(scores[agent.name])), scores[agent.name])
+plt.axhline(y=SOLVED, color='red')
+plt.show()
+
+
+# Observe Trained Agent on the Environment
+# ----------------------------------------
+
+model_path = './models_backups/DQN_agent_checkpoint.pkl'
+
+# Load the brain
+dqn_agent = DQAgent('DQN_Agent', state_size, action_size, seed, h_layers, LR, BS, BFS, GAMMA, TAU, UE)
+if cuda: dqn_agent.qnetwork_local.load_state_dict(torch.load(model_path))
+else: dqn_agent.qnetwork_local.load_state_dict(torch.load(model_path, map_location='cpu'))
+
+ddqn_agent = DoubleDQAgent('DQN_Agent', state_size, action_size, seed, h_layers, LR, BS, BFS, GAMMA, TAU, UE)
+if cuda: ddqn_agent.qnetwork_local.load_state_dict(torch.load(model_path))
+else: ddqn_agent.qnetwork_local.load_state_dict(torch.load(model_path, map_location='cpu'))
+
+with open('./results_backups/{}.pkl'.format(dqn_agent.name), 'rb') as input:
+    scores = pickle.load(input)
+    
+scores['dqn'] = pickle.load('./results_backups/{}.pkl'.format(dqn_agent.name), 'rb')
+scores['ddqn'] = pickle.load('./results_backups/{}.pkl'.format(ddqn_agent.name), 'rb')
+    
+
+for i in range(5):
+    
+    env_info = env.reset(train_mode=False)[brain_name]
+    state = env_info.vector_observations[0]
+    
+    for j in range(200):
+        action = agent.act(state).astype(int)
+        env_info = env.step(action)[brain_name]
+        state = env_info.vector_observations[0]  
+        done = env_info.local_done[0]
+        if done:
+            break
+    
 
  
 
