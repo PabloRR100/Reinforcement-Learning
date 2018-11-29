@@ -1,4 +1,4 @@
-r#!/usr/bin/env python3
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
 Navigation
@@ -15,6 +15,7 @@ from collections import deque
 # Load World
 from unityagents import UnityEnvironment
 env = UnityEnvironment(file_name = 'Banana.app')
+SOLVED = 13.0
 
 # Load Brain (default)
 brain_name = env.brain_names[0] # 'BananaBrain'
@@ -50,6 +51,7 @@ state_size = len(env.reset(train_mode=True)[brain_name].vector_observations[0])
 # ---------------
 
 seed = 2018
+scores = dict()     # Results container
 
 h_layers=[32,32]    # Hidden Layers
 LR = 5e-4           # Learning rate 
@@ -72,8 +74,7 @@ eps_decay = 0.995   # Exploration decay rate
 # ------------
 
 from dqn import DQAgent, DoubleDQAgent
-agent = DQAgent(state_size, action_size, seed, h_layers, LR, BS, BFS, GAMMA, TAU, UE)
-agent = DoubleDQAgent(state_size, action_size, seed, h_layers, LR, BS, BFS, GAMMA, TAU, UE)
+agent = DQAgent('DQN_Agent', state_size, action_size, seed, h_layers, LR, BS, BFS, GAMMA, TAU, UE)
 
 agent
 
@@ -91,7 +92,7 @@ def train(agent, EPISODES, TIMESTEPS, eps_0, eps_F, eps_decay):
             print('\rEpisode {}\tAverage Score: {:.2f}'.format(e, np.mean(s)), end="")
         
     def solved(e,s):
-        solved = np.mean(last_scores) >= 13.0
+        solved = np.mean(last_scores) >= SOLVED
         if solved:
             print('\nEnvironment solved in {:d} episodes!\tAverage Score: {:.2f}' \
                   .format(e-100, np.mean(s)))
@@ -132,16 +133,16 @@ def train(agent, EPISODES, TIMESTEPS, eps_0, eps_F, eps_decay):
         # Monitoring
         monitor(e, last_scores)
         if solved(e,score):
-            torch.save(agent.qnetwork_local.state_dict(), 'checkpoint.pkl')
+            torch.save(agent.qnetwork_local.state_dict(), '{}_checkpoint.pkl'.format(agent.name))
             break
         
     return episode_scores
     
 # We don't see agents while training
-env_info = env.reset(train_mode=False)[brain_name]
+env_info = env.reset(train_mode=True)[brain_name]
 state = env_info.vector_observations[0]
 
-scores = train(EPISODES, TIMESTEPS, eps_0, eps_F, eps_decay)
+scores[agent.name] = train(EPISODES, TIMESTEPS, eps_0, eps_F, eps_decay)
 
 
 # Training Analysis
@@ -155,8 +156,8 @@ sns.set()
 fake = np.random.randn(1000).tolist()
 
 plt.figure()
-sns.lineplot(range(len(fake)), fake)
-plt.axhline(y=0.95, color='red')
+sns.lineplot(range(len(scores)), scores)
+plt.axhline(y=SOLVED, color='red')
 plt.show()
 
 
@@ -182,11 +183,33 @@ for i in range(5):
     
     
     
-        
-        
-    
+# Double DQN
+# ----------
 
-    
+double_agent = DoubleDQAgent('Double_DQN_Agent', state_size, action_size, seed, h_layers, LR, BS, BFS, GAMMA, TAU, UE)
+double_agent
+
+env_info = env.reset(train_mode=True)[brain_name]
+state = env_info.vector_observations[0]
+
+scores[double_agent.name] = train(double_agent, EPISODES, TIMESTEPS, eps_0, eps_F, eps_decay)
+
+
+# Prioritized Experience Replay
+# -----------------------------
+
+
+# Dueling DQN
+# -----------
+
+
+# Rainbow
+# -------
+
+
+
+
+
  
 
 

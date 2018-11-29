@@ -44,7 +44,7 @@ class DQNet(nn.Module):
             x = F.relu(self.fcH[l](x))
         x = F.relu(self.fcO(x))
         return x
-    
+  
     
 class DuelingQNEt(nn.Module):
     ''' Dueling Q-Network '''
@@ -104,8 +104,9 @@ class ReplayBuffer:
 class DQAgent():
     ''' Interacts with and learns from the environment '''
     
-    def __init__(self, state_size, action_size, seed, h_layers, LR, BS, BFS, gamma, tau, ue):
+    def __init__(self, name, state_size, action_size, seed, h_layers, LR, BS, BFS, gamma, tau, ue):
         
+        self.name = name
         self.state_size = state_size
         self.action_size = action_size
         self.seed = random.seed(seed)
@@ -227,6 +228,10 @@ class DoubleDQAgent(DQAgent):
         loss.backward()
         self.optimizer.step()
         self.soft_update(self.qnetwork_local, self.qnetwork_target, self.tau)
+        
+    def __repr__(self):
+       return 'Double DQN - Agent \n Brain Power: {} Neurons \n Brain Structure: \n {}' \
+           .format(count_parameters(self.qnetwork_local), self.qnetwork_local)
         
         
         
