@@ -40,4 +40,4 @@ Give a higher probability of being sampled from the memory to those tuples that 
 - **Implement a Dueling DQN**  
 Have a single network that produced two outputs, a value function estimation and an advantage estimation, to combine both when predicting the Q-value.
 
-[training]: 'training.png'
+[training]: './training.png'
