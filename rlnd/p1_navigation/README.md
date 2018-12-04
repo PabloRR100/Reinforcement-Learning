@@ -63,6 +63,7 @@ The trained agents can be found in the folder ```models_backups```
 
 
 # Final Report
-A summary of the project and the performance report can be found in the ```Report.ipynb``` notebook.
+A summary of the project and the performance report can be found in the [```Report.md```][report] 
 
 [udacity]: https://www.udacity.com/course/deep-reinforcement-learning-nanodegree--nd893
+[report]: https://github.com/PabloRR100/Reinforcement-Learning/blob/master/rlnd/p1_navigation/Report.md
