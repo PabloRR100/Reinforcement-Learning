@@ -1,21 +1,17 @@
 
-# Torch Implementation
+
 import torch.nn as nn
 
-class Agent(nn.Module):
+class Policy(nn.Module):
     
     def __init__(self):
-        super(Agent, self).__init__()
-        
-        # outputsize = (inputsize - kernel_size + stride)/stride 
-        # Let's start with a simple network. More complex one commented out
-
-        # output = 20x20 here
-        self.conv1 = nn.Conv2d(2, 4, kernel_size=2, stride=2)  ## 80x80x2 --> 40x40x4
-        self.conv2 = nn.Conv2d(4, 16, kernel_size=2, stride=2) ## 40x40x4 --> 20x20x16 
+        super(Policy, self).__init__()
         
         self.size = 20*20*16 # 6400
         
+        self.conv1 = nn.Conv2d(2, 4, kernel_size=2, stride=2)  ## 80x80x2 --> 40x40x4
+        self.conv2 = nn.Conv2d(4, 16, kernel_size=2, stride=2) ## 40x40x4 --> 20x20x16         
+    
         # 1 fully connected layer        
         self.fc1 = nn.Linear(self.size, 200)
         self.fc2 = nn.Linear(200, 1)
