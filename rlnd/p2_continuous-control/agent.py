@@ -18,12 +18,13 @@ LR_ACTOR = 1e-4         # learning rate of the actor
 LR_CRITIC = 3e-4        # learning rate of the critic
 WEIGHT_DECAY = 0.0001   # L2 weight decay
 
-device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+
 
 class Agent():
     """Interacts with and learns from the environment."""
     
-    def __init__(self, state_size, action_size, random_seed=2018):
+    def __init__(self, num_agents, state_size, action_size, random_seed=2018):
         """Initialize an Agent object.
         
         Params
@@ -32,6 +33,7 @@ class Agent():
             action_size (int): dimension of each action
             random_seed (int): random seed
         """
+        self.num_agents = num_agents
         self.state_size = state_size
         self.action_size = action_size
         self.seed = random.seed(random_seed)
@@ -61,16 +63,26 @@ class Agent():
         if len(self.memory) > BATCH_SIZE:
             experiences = self.memory.sample()
             self.learn(experiences, GAMMA)
-
+            
+    def sampleandlearn(self):
+        ''' Learn from stored experiences '''
+        if len(self.memory) > BATCH_SIZE:
+            for _ in range(self.num_agents*20):
+                experiences = self.memory.sample()
+                self.learn(experiences, GAMMA)
+                
     def act(self, state, add_noise=True):
         """Returns actions for given state as per current policy."""
         state = torch.from_numpy(state).float().to(device)
         self.actor_local.eval()
+        
         with torch.no_grad():
             action = self.actor_local(state).cpu().data.numpy()
         self.actor_local.train()
+        
         if add_noise:
-            action += self.noise.sample()
+            for a in range(self.num_agents):
+                action[a] += self.noise.sample()
         return np.clip(action, -1, 1)
 
     def reset(self):
