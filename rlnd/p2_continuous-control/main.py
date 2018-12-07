@@ -6,6 +6,7 @@ Continuous Control - Unity Environment - The Reacher
 """
 
 import torch
+import pickle
 import numpy as np
 from collections import deque
 import matplotlib.pyplot as plt
@@ -13,6 +14,9 @@ import matplotlib.pyplot as plt
 from agent import Agent
 from unityagents import UnityEnvironment
 from utils import timeit, count_parameters
+
+cuda = True if torch.cuda.is_available() else False
+gpus = True if torch.cuda.device_count() > 1 else False
 
 # N_AGENTS = 20
 EPISODES = 300
@@ -104,7 +108,7 @@ def train(env, n_episodes=EPISODES, print_every=PRINT_EVERY):
             if np.any(dones):                                  # End of the episode
                 break
             
-            states = next_states                               # roll over states to next time step
+            states = next_states                               # Roll over states to next time step
             j += 1
             
         agent.sampleandlearn()
@@ -126,18 +130,13 @@ def train(env, n_episodes=EPISODES, print_every=PRINT_EVERY):
     return agent, scores_global
 
 
-## Load Trained Agent
-## ------------------
-#
-#agent = Agent(state_size=state_size, action_size=action_size)
-#agent.actor_local.load_state_dict(torch.load('checkpoint_actor.pth'))
-#agent.critic_local.load_state_dict(torch.load('checkpoint_critic.pth'))
-
 
 # Init Training
 # -------------
 
 agent, scores = train(ENV, EPISODES, PRINT_EVERY)
+with open('results.pickle', 'wb') as output:
+    pickle.dump(scores, output, protocol=pickle.HIGHEST_PROTOCOL)
 
 fig = plt.figure()
 ax = fig.add_subplot(111)
@@ -147,3 +146,14 @@ plt.xlabel('Episode #')
 plt.show()
 
 
+
+## Load Trained Agent
+## ------------------
+#
+#agent = Agent(state_size=state_size, action_size=action_size)
+#agent.actor_local.load_state_dict(torch.load('checkpoint_actor.pth'))
+#agent.critic_local.load_state_dict(torch.load('checkpoint_critic.pth'))
+#
+#with open('results.pickle', 'rb') as input:
+#    scores = pickle.load(input)
+#    
