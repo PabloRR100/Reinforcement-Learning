@@ -24,29 +24,33 @@ PRINT_EVERY = 100
 # ENV = 'Reacher.app'
 ENV = 'Reacher20.app'
 
-#
-## Test World
-## ----------
-#
-#env = UnityEnvironment(file_name=ENV)
-#
-#brain_name = env.brain_names[0]
-#brain = env.brains[brain_name]
-#
-#env_info = env.reset(train_mode=True)[brain_name]
-#num_agents = len(env_info.agents)
-#
-#env.close()
-#
-#
-## Test Agent
-## ----------
-#
-#state_size, action_size = brain.vector_observation_space_size, brain.vector_action_space_size
-#agent = Agent(num_agents=num_agents, state_size=state_size, action_size=action_size)
-#
-#print('Capacity of the Actor (# of parameters): ', count_parameters(agent.actor_local))
-#print('Capacity of the Critic (# of parameters): ', count_parameters(agent.critic_local))
+
+test = False
+if test:
+    
+    # Test World
+    # ----------
+    
+    env = UnityEnvironment(file_name=ENV)
+    
+    brain_name = env.brain_names[0]
+    brain = env.brains[brain_name]
+    
+    env_info = env.reset(train_mode=True)[brain_name]
+    num_agents = len(env_info.agents)
+    print('Number of Agents: ', num_agents)
+    
+    env.close()
+    
+    
+    # Test Agent
+    # ----------
+    
+    state_size, action_size = brain.vector_observation_space_size, brain.vector_action_space_size
+    agent = Agent(num_agents=num_agents, state_size=state_size, action_size=action_size)
+    
+    print('Capacity of the Actor (# of parameters): ', count_parameters(agent.actor_local))
+    print('Capacity of the Critic (# of parameters): ', count_parameters(agent.critic_local))
 
         
 # Training
