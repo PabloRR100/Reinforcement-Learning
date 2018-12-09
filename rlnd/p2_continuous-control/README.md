@@ -68,6 +68,6 @@ The agents have the ability to:
  - Soft Target -> Soft update to melt the target parameters to the regural parameters
 
 ### Results
-The resutls obtained during the training and the metrics of performance can be found in the [report][report] attached.
+The resutls obtained during the training and the metrics of performance can be found in the [report][1] attached.
 
-[report]: https://github.com/PabloRR100/Reinforcement-Learning/tree/master/rlnd/p2_continuous-control/report)
+[1]: https://github.com/PabloRR100/Reinforcement-Learning/tree/master/rlnd/p2_continuous-control/report
