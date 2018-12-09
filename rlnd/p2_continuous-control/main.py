@@ -20,7 +20,6 @@ from utils import timeit, count_parameters
 cuda = True if torch.cuda.is_available() else False
 gpus = True if torch.cuda.device_count() > 1 else False
 
-# N_AGENTS = 20
 EPISODES = 300
 MAX_ITERS = 1000
 PRINT_EVERY = 100
