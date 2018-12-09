@@ -16,6 +16,13 @@ def timeit(method):
             print('%r  %2.2f ms' % (method.__name__, (te - ts) * 1000))
         return result
     return timed
+
+
+def timer(t0):
+    deltatime = time.time() - t0
+    if deltatime > 60:
+        return deltatime / 60
+    return deltatime
         
         
 # Count parameters of a model 
