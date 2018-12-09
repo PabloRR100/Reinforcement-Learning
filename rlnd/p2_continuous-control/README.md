@@ -67,4 +67,7 @@ The agents have the ability to:
  - Learn -> Update the Actor and Critic == Update the Policy and the Value Parameters
  - Soft Target -> Soft update to melt the target parameters to the regural parameters
 
+### Results
+The resutls obtained during the training and the metrics of performance can be found in the [report][report] attached.
 
+[report](https://github.com/PabloRR100/Reinforcement-Learning/tree/master/rlnd/p2_continuous-control/report)
