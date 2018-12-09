@@ -63,10 +63,10 @@ class Agent():
         # Save experience / reward
         self.memory.add(state, action, reward, next_state, done)
 
-        # Learn, if enough samples are available in memory
-        if len(self.memory) > BATCH_SIZE:
-            experiences = self.memory.sample()
-            self.learn(experiences, GAMMA)
+#        # Learn, if enough samples are available in memory
+#        if len(self.memory) > BATCH_SIZE:
+#            experiences = self.memory.sample()
+#            self.learn(experiences, GAMMA)
             
     def sampleandlearn(self):
         ''' Learn from stored experiences '''
