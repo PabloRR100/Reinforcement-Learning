@@ -52,7 +52,7 @@ The environment is considered solved, when the average (over 100 episodes) of th
 The instructions to solve the environment can be foiund in `Continuous_Control.ipynb`.  
 In order to create your own agent, you should modify the files ```networks.py``` or ```agent.py```.  
 
-#### ```Networks.py````
+#### ```Networks.py```
 In this script you will find the neural networks (in PyTorch) used as the brains of the Actor and the Critic.  
 Feel free to modify them to increment their capacity. Note that bigger networks will probably have more ability to learn but at the cost of more training time, since there are more parameters to adjust (or learn).  
 
