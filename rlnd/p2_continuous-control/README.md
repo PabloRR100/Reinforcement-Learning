@@ -70,4 +70,4 @@ The agents have the ability to:
 ### Results
 The resutls obtained during the training and the metrics of performance can be found in the [report][report] attached.
 
-[report](https://github.com/PabloRR100/Reinforcement-Learning/tree/master/rlnd/p2_continuous-control/report)
+[report]: https://github.com/PabloRR100/Reinforcement-Learning/tree/master/rlnd/p2_continuous-control/report)
