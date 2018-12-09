@@ -32,7 +32,7 @@ This is opposed to the DQN implementation where the Target Network is updated ev
 # Init Training
 # -------------
 
-agent, scores = train(ENV, EPISODES, PRINT_EVERY)
+agent, scores = train(ENV)
 results = dict(agent=agent, scores=scores)
 ```
 
@@ -59,58 +59,28 @@ results = dict(agent=agent, scores=scores)
             Vector Action descriptions: , , , 
 
 
-    Loading agent...
+    Loading agenst...
     
-    Capacity of the Actor (# of parameters):  9732
+    Number of Agents loaded:  20
+    Capacity of the Actor (# of parameters):  162436
     Capacity of the Critic (# of parameters):  108545
     Initializing training...
     
-    Episode 1, Mean last 100 scores: 0.05, Mean current score: 0.05, 
+    Episode 1, Average last 100 scores: 0.01, Episode Duration: 561.76, 
     
-    Episode 2, Mean last 100 scores: 0.08, Mean current score: 0.11, 
+    Episode 2, Average last 100 scores: 0.01, Episode Duration: 621.55, 
     
-    Episode 3, Mean last 100 scores: 0.06, Mean current score: 0.00, 
+    Episode 3, Average last 100 scores: 0.01, Episode Duration: 631.52, 
     
-    Episode 4, Mean last 100 scores: 0.04, Mean current score: 0.01, 
+    Episode 4, Average last 100 scores: 0.01, Episode Duration: 648.75, 
     
-    Episode 5, Mean last 100 scores: 0.04, Mean current score: 0.00, 
+    Episode 5, Average last 100 scores: 0.01, Episode Duration: 655.82, 
     
-    Episode 6, Mean last 100 scores: 0.03, Mean current score: 0.01, 
+    Episode 6, Average last 100 scores: 0.01, Episode Duration: 674.15, 
     
-    Episode 7, Mean last 100 scores: 0.03, Mean current score: 0.02, 
-    
-    Episode 8, Mean last 100 scores: 0.03, Mean current score: 0.01, 
-    
-    Episode 10, Mean last 100 scores: 0.03, Mean current score: 0.02, 
-    
-    Episode 11, Mean last 100 scores: 0.02, Mean current score: 0.00, 
-    
-    Episode 12, Mean last 100 scores: 0.02, Mean current score: 0.00, 
-    
-    Episode 13, Mean last 100 scores: 0.02, Mean current score: 0.00, 
-    
-    Episode 14, Mean last 100 scores: 0.02, Mean current score: 0.01, 
-    
-    Episode 15, Mean last 100 scores: 0.02, Mean current score: 0.01, 
-    
-    Episode 16, Mean last 100 scores: 0.02, Mean current score: 0.01, 
-    
-    Episode 17, Mean last 100 scores: 0.02, Mean current score: 0.01, 
-    
-    Episode 18, Mean last 100 scores: 0.02, Mean current score: 0.00, 
-    
-    Episode 19, Mean last 100 scores: 0.02, Mean current score: 0.00, 
-    
-    Episode 20, Mean last 100 scores: 0.02, Mean current score: 0.00, 
-    
-    Episode 21, Mean last 100 scores: 0.01, Mean current score: 0.01, 
-    
-    Episode 22, Mean last 100 scores: 0.01, Mean current score: 0.01, 
-    
-    Episode 23, Mean last 100 scores: 0.01, Mean current score: 0.00, 
-    
-    Step 500	Average Score: 0.00
+    Step 500	Average Score: 0.02
 
+**I stopped the training here since it was not improving at all and I only have 4 GPU hours left for finish this project and next one**
 
 ## Results 
 
@@ -122,6 +92,8 @@ plt.ylabel('Score')
 plt.xlabel('Episode #')
 plt.show()
 ```
+
+This code will plot the evolution of the scores once the training is completed
 
 
 ## Future Improvements  
