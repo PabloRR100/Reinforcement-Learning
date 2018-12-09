@@ -1,6 +1,5 @@
 
 # Continuous Control Project
----
 
 
 ## Algorithm: Deep Deterministic Policy Gradient
