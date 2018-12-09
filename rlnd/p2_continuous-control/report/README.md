@@ -94,16 +94,14 @@ plt.show()
 ```
 
 This code will plot the evolution of the scores once the training is completed
+![png](output_9_1.png)
 
 
 ## Future Improvements  
 
     1 - Tuning of the hyperparameters to speed up training and increase performance.  
     2 - Try different algorithms:
-     * [Continuous Deep Q-Learning with Model-based Acceleration][NAF] 
-
-
-![png](output_9_1.png)
+      [Continuous Deep Q-Learning with Model-based Acceleration][2] 
 
 [paper]: https://arxiv.org/abs/1509.02971
-[NAF]: https://arxiv.org/abs/1603.00748
+[2]: https://arxiv.org/abs/1603.00748
