@@ -33,13 +33,13 @@ class Actor(nn.Module):
 
     def reset_parameters(self):
         self.fc1.weight.data.uniform_(*hidden_init(self.fc1))
-        self.fc1.weight.data.uniform_(*hidden_init(self.fc2))
-        self.fc2.weight.data.uniform_(-3e-3, 3e-3)
+        self.fc2.weight.data.uniform_(*hidden_init(self.fc2))
+        self.fc3.weight.data.uniform_(-3e-3, 3e-3)
 
     def forward(self, state):
         """Build an actor (policy) network that maps states -> actions."""
         x = F.relu(self.fc1(state))
-        x = F.relu(self.fc1(x))
+        x = F.relu(self.fc2(x))
         return F.tanh(self.fc3(x))
 
 
