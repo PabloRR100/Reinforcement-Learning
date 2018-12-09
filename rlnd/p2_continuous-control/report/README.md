@@ -133,5 +133,5 @@ plt.show()
 
 ![png](output_9_1.png)
 
-[paper](https://arxiv.org/abs/1509.02971)
-[NAF](https://arxiv.org/abs/1603.00748)
+[paper]: https://arxiv.org/abs/1509.02971
+[NAF]: https://arxiv.org/abs/1603.00748
