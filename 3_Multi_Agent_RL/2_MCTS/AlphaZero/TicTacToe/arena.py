@@ -47,66 +47,7 @@ def Random_Player(game):
 # Training the Agent - Alpha Zero Algorithm
 # -----------------------------------------
 
-import torch
-import numpy as np
-import progressbar as pb    
-import torch.optim as optim
-optimizer = optim.Adam(agent.parameters(), lr=.01, weight_decay=1e-4)
 
-losses = []
-outcomes = []
-episodes = 400
-
-widget = ['training loop: ', pb.Percentage(), ' ', 
-          pb.Bar(), ' ', pb.ETA() ]
-timer = pb.ProgressBar(widgets=widget, maxval=episodes).start()
-
-
-for e in range(episodes):
-
-    # Start Tree Game
-    mytree = MCTS.Node(ConnectN(**game_setting)) 
-    
-    vterm = []    # Critic Term
-    logterm = []  # Policy Term
-    
-    # Run 50 moves or until the game is finished
-    while mytree.outcome is None:
-        for _ in range(50):
-            mytree.explore(agent)
-            
-        # Collect results from exploration and make a move
-        current_player = mytree.game.player
-        mytree, (v, nn_v, p, nn_p) = mytree.next()        
-        mytree.detach_mother()
-        
-        # compute prob* log pi 
-        loglist = torch.log(nn_p)*p
-        
-        # constant term to make sure if policy result = MCTS result, loss = 0
-        constant = torch.where(p>0, p*torch.log(p), torch.tensor(0.))
-        logterm.append(-torch.sum(loglist-constant))
-        
-        vterm.append(nn_v*current_player)
-        
-    # Compute the "policy_loss"
-    outcome = mytree.outcome
-    outcomes.append(outcome)
-    
-    loss = torch.sum( (torch.stack(vterm)-outcome)**2 + torch.stack(logterm) )
-    optimizer.zero_grad()
-
-    loss.backward()
-    losses.append(float(loss))
-    optimizer.step()
-    
-    if (e+1)%50==0:
-        print("Game: ",e+1, ", mean loss: {:3.2f}".format(np.mean(losses[-20:])),
-              ", recent outcomes: ", outcomes[-10:])
-    del loss
-    timer.update(e+1)    
-    
-timer.finish()
 
 # Training Progress
 

@@ -168,7 +168,7 @@ class Node:
     
         current.N += 1
 
-        # now update U and back-prop
+        # Update U and back-propagate the tree
         while current.mother:
             mother = current.mother
             mother.N += 1
