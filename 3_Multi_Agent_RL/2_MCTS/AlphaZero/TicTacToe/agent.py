@@ -22,8 +22,19 @@ class Agent(nn.Module):
         
         # Activations
         self.relu = nn.ReLU()
-        self.lrelu = nn.LeakyRelu()
+        self.lrelu = nn.LeakyReLU()
         self.tanh = nn.Tanh()
+        
+        # Mask Possible Actions and Normalize
+        def masknorm(self,a,x):
+            # availability of moves
+            avail = (torch.abs(x.squeeze())!=1).type(torch.FloatTensor)
+            avail = avail.view(-1, 9)
+            # Set the prob to zero where actions are not possible
+            maxa = torch.max(a)
+            # subtract off max for numerical stability (avoids blowing up at infinity)
+            exp = avail*torch.exp(a-maxa)
+            return exp/torch.sum(exp)
         
     def forward(self, x):
 
@@ -34,15 +45,9 @@ class Agent(nn.Module):
         # the action head
         a = self.relu(self.fc_action1(y))
         a = self.fc_action2(a)
-        # availability of moves
-        avail = (torch.abs(x.squeeze())!=1).type(torch.FloatTensor)
-        avail = avail.view(-1, 9)
-        
-        # Set the prob to zero where actions are not possible
-        maxa = torch.max(a)
-        # subtract off max for numerical stability (avoids blowing up at infinity)
-        exp = avail*torch.exp(a-maxa)
-        prob = exp/torch.sum(exp)
+
+        # Mask unpossible actions and normalize probs                
+        prob = self.masknorm(a,x)
         
         # The value head
         value = self.relu(self.fc_value1(y))

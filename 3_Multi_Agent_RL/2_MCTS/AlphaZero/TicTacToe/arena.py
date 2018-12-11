@@ -22,7 +22,7 @@ game = ConnectN(**game_setting)
 # Agent with the Policy
 # ---------------------
 
-from Agent import Agent
+from agent import Agent
 agent = Agent()
 
 
@@ -44,8 +44,8 @@ def Random_Player(game):
     return random.choice(game.available_moves())    
 
 
-# Training the Agent
-# ------------------
+# Training the Agent - Alpha Zero Algorithm
+# -----------------------------------------
 
 import torch
 import numpy as np

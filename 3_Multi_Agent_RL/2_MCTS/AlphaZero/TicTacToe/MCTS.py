@@ -52,7 +52,10 @@ device ='cpu'
 
 
 def process_policy(policy, game):
-
+    '''
+    Forward pass on the game given the policy of the agent
+    '''
+    
     # for square board, add rotations as well
     if game.size[0]==game.size[1]:
         t, tinv = random.choice(transformation_list)
@@ -154,7 +157,7 @@ class Node:
                 
             current = child[action]
         
-        # if node hasn't been expanded
+        # If node hasn't been expanded -> Init of the exploration
         if not current.child and current.outcome is None:
             # policy outputs results from the perspective of the next player
             # thus extra - sign is needed
