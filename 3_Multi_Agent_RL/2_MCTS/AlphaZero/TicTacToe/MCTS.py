@@ -1,12 +1,14 @@
+
+import random
 import numpy as np
+from copy import copy
+from math import sqrt
 import matplotlib.pyplot as plt
+
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
 import matplotlib.animation as animation
-from copy import copy
-from math import *
-import random
 
 c=1.0
 
@@ -48,6 +50,7 @@ transformation_list_half = list(zip(tlist_half, tinvlist_half))
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu") 
 device ='cpu'
 
+
 def process_policy(policy, game):
 
     # for square board, add rotations as well
@@ -67,23 +70,25 @@ def process_policy(policy, game):
     # the current player is the previous player making the move
     return game.available_moves(), tinv(prob)[mask].view(-1), v.squeeze().squeeze()
 
+
 class Node:
+    
     def __init__(self, game, mother=None, prob=torch.tensor(0., dtype=torch.float)):
         self.game = game
           
-        # child nodes
+        # Child nodes
         self.child = {}
-        # numbers for determining which actions to take next
+        
+        # Numbers for determining which actions to take next
         self.U = 0
 
-        # V from neural net output
-        # it's a torch.tensor object
-        # has require_grad enabled
+        # V from neural net output - require_grad enabled
         self.prob = prob
-        # the predicted expectation from neural net
+        
+        # The predicted expectation from neural net (Critic)
         self.nn_v = torch.tensor(0., dtype=torch.float)
         
-        # visit count
+        # Visit counter
         self.N = 0
 
         # expected V from MCTS
@@ -96,17 +101,16 @@ class Node:
         # and there is a known perfect play
         self.outcome = self.game.score
 
-
-        # if game is won/loss/draw
+        # if game is finished
         if self.game.score is not None:
-            self.V = self.game.score*self.game.player
-            self.U = 0 if self.game.score is 0 else self.V*float('inf')
+            self.V = self.game.score * self.game.player # respect to the player
+            self.U = 0 if self.game.score is 0 else self.V * float('inf') ## TODO: why inf?
 
-        # link to previous node
+        # Link to previous node
         self.mother = mother
 
     def create_child(self, actions, probs):
-        # create a dictionary of children
+        # Create a dictionary of children
         games = [ copy(self.game) for a in actions ]
 
         for action, game in zip(actions, games):
@@ -116,23 +120,24 @@ class Node:
         self.child = child
         
     def explore(self, policy):
+        '''
+        Recieves a policy and explores the tree following it
+        '''
 
         if self.game.score is not None:
-            raise ValueError("game has ended with score {0:d}".format(self.game.score))
-
+            raise ValueError("Game has ended with score {0:d}".format(self.game.score))
         current = self
 
-        
-        # explore children of the node
-        # to speed things up 
+        # Explore children of the node to speed things up 
         while current.child and current.outcome is None:
 
             child = current.child
             max_U = max(c.U for c in child.values())
+            
             #print("current max_U ", max_U) 
             actions = [ a for a,c in child.items() if c.U == max_U ]
             if len(actions) == 0:
-                print("error zero length ", max_U)
+                print("Error zero length ", max_U)
                 print(current.game.state)
                       
             action = random.choice(actions)            
@@ -157,18 +162,18 @@ class Node:
             current.nn_v = -v
             current.create_child(next_actions, probs)
             current.V = -float(v)
-
-        
+    
         current.N += 1
 
         # now update U and back-prop
         while current.mother:
             mother = current.mother
             mother.N += 1
-            # beteen mother and child, the player is switched, extra - sign
+            
+            # Between mother and child, the player is switched, extra - sign
             mother.V += (-current.V - mother.V)/mother.N
 
-            #update U for all sibling nodes
+            # Update U for all sibling nodes
             for sibling in mother.child.values():
                 if sibling.U is not float("inf") and sibling.U is not -float("inf"):
                     sibling.U = sibling.V + c*float(sibling.prob)* sqrt(mother.N)/(1+sibling.N)
@@ -180,31 +185,31 @@ class Node:
     def next(self, temperature=1.0):
 
         if self.game.score is not None:
-            raise ValueError('game has ended with score {0:d}'.format(self.game.score))
+            raise ValueError('Game has ended with score {0:d}'.format(self.game.score))
 
         if not self.child:
             print(self.game.state)
-            raise ValueError('no children found and game hasn\'t ended')
+            raise ValueError('No children found and game hasn\'t ended')
         
         child=self.child
 
         
-        # if there are winning moves, just output those
+        # If there are winning moves, just output those
         max_U = max(c.U for c in child.values())
 
         if max_U == float("inf"):
             prob = torch.tensor([ 1.0 if c.U == float("inf") else 0 for c in child.values()], device=device)
             
         else:
-            # divide things by maxN for numerical stability
+            # Divide things by maxN for numerical stability
             maxN = max(node.N for node in child.values())+1
             prob = torch.tensor([ (node.N/maxN)**(1/temperature) for node in child.values() ], device=device)
 
-        # normalize the probability
+        # Normalize the probability
         if torch.sum(prob) > 0:
             prob /= torch.sum(prob)
             
-        # if sum is zero, just make things random
+        # If sum is zero, just make things random
         else:
             prob = torch.tensor(1.0/len(child), device=device).repeat(len(child))
 
