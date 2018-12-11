@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """
 @author: pabloruizruiz
-Continuous Control - Unity Environment - The Reacher
+Collaboration and Competition - Unity Environment - Tennis Game
 """
 
 import time
@@ -12,6 +12,7 @@ import numpy as np
 #from utils import timer
 from collections import deque
 import matplotlib.pyplot as plt
+from beautifultable import BeautifulTable as BT
 
 from agent import Agent
 from unityagents import UnityEnvironment
@@ -26,9 +27,7 @@ PRINT_EVERY = 100
 LEARN_PERIOD = 20
 NUM_SAMPLES = 10
 
-# ENV = 'Reacher.app'
-ENV = 'Reacher20.app'
-
+ENV = 'Tennis.app'
 
 test = False
 if test:
@@ -44,6 +43,24 @@ if test:
     env_info = env.reset(train_mode=True)[brain_name]
     num_agents = len(env_info.agents)
     print('Number of Agents: ', num_agents)
+    
+    states = env_info.vector_observations
+    state_vector_names = ['racket x pos', 'racket y pos', 'racket x velocity', 'racket y velocity',
+                          'ball x pos', 'ball y pos', 'ball x velocity', 'ball y velocity']
+    
+    print('A state vector for one of the agent looks like:')
+    state = states[0].reshape(3,8)
+    table = BT()
+    table.column_headers = state_vector_names 
+    [table.append_row(state[i].tolist()) for i in range(state.shape[0])]
+    print(table)
+    
+    # But only the last row provides new information to each state, so we could simply get those values
+    state = states[0].reshape(3,8)[-1]
+    table = BT()
+    table.column_headers = state_vector_names 
+    table.append_row(state.tolist())
+    print(table)
     
     env.close()
     
@@ -77,6 +94,7 @@ def train(env):
     brain = env.brains[brain_name]
     env_info = env.reset(train_mode=True)[brain_name]
     
+
     
     print('Loading agent...\n')
     num_agents = len(env_info.agents)
