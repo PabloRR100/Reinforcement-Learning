@@ -52,9 +52,11 @@ class Agent():
     
     def step(self, state, action, reward, next_state, done):
         ''' Save experience in replay memory, and use random sample from buffer to learn '''
+        
+        # Save experience into memory
         self.memory.add(state, action, reward, next_state, done)
-
-        # Learn, if enough samples are available in memory
+        
+        # Learn from memory once there is enough samples (BATCH_SIZE) available 
         if len(self.memory) > BATCH_SIZE:
             experiences = self.memory.sample()
             self.learn(experiences, GAMMA)
@@ -159,6 +161,7 @@ class ReplayBuffer:
         self.memory.append(e)
     
     def sample(self):
+        ## TODO: why returns 512 if the batchsize is 256!????
         ''' Randomly sample a batch of experiences from memory '''
         experiences = random.sample(self.memory, k=self.batch_size)
 
@@ -167,7 +170,6 @@ class ReplayBuffer:
         rewards = torch.from_numpy(np.vstack([e.reward for e in experiences if e is not None])).float().to(self.device)
         next_states = torch.from_numpy(np.vstack([e.next_state for e in experiences if e is not None])).float().to(self.device)
         dones = torch.from_numpy(np.vstack([e.done for e in experiences if e is not None]).astype(np.uint8)).float().to(self.device)
-
         return (states, actions, rewards, next_states, dones)
 
     def __len__(self):

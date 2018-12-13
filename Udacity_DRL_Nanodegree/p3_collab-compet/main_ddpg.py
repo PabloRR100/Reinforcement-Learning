@@ -153,86 +153,93 @@ def train(env):
     print('Capacity of the Actor (# of parameters): ', count_parameters(agent.actor_local))
     print('Capacity of the Critic (# of parameters): ', count_parameters(agent.critic_local))    
             
-    try:    
+    # try:    
         
-        avg_score = []
-        last_100_mean = 0
-        scores_global = []
-        scores_concur = deque(maxlen=MAXLEN)
-        
-        print('Initializing training...\n')
-        for e in range(1, EPISODES+1):
-            
-            # Initialize Episode
-            agent.reset()
-            t0 = time.time()            
-            scores = np.zeros(num_agents)
-            env_info = env.reset(train_mode=True)[brain_name]
-            states = env_info.vector_observations
-            
-            
-            #for i in range(MAX_ITERS): # Run episode maximum until MAX_ITERS
-            while True:
-                
-                # Select an action for each Agent
-                actions = agent.act(states)
-                env_info = env.step(actions)[brain_name]          
-                
-                # Observe result of the action
-                next_states = env_info.vector_observations         
-                rewards = env_info.rewards                         
-                dones = env_info.local_done   
-                         
-                agent.step(states, actions, rewards, next_states, dones)
-                
-                # Store score result and move on
-                scores += env_info.rewards                         
-                
-                # Roll over states to next time step
-                states = next_states                               
-                
-                # Finish episode when one agent is done                
-                if np.any(dones):                                  
-                    break                                
-            
-            
-            deltatime = time.time() - t0
-            
-            score = np.mean(scores)         # Avg score of the current episode
-            scores_concur.append(score)     # Append to our last_100 list
-            scores_global.append(score)     # Append to the global list of all episodes
-            avg_score.append(np.mean(scores_concur)) # Append to our smoothing avg list
-            
-            print('\rEpisode {}, Average last 100 scores: {:.2f}, Episode Duration: {:.2f}, \n'\
-                  .format(e, avg_score[-1], deltatime))
-            
-            # If last 100 episodes average score is the best 100 average seen - Save Models & Update
-            if avg_score[-1] > last_100_mean:
-                torch.save(agent.actor_local.state_dict(), 'checkpoint_actor_{}.pth'.format(e))
-                torch.save(agent.critic_local.state_dict(), 'checkpoint_critic_{}.pth'.format(e))
-            last_100_mean = avg_score[-1]
-            
-            if np.mean(scores_concur) > 30:
-                print('\n\n Goal Achieved - 100 consecutives episodes with mean > 30')
-        
-        print('Closing envionment...\n')
-        env.close()
-        return agent, scores_global, avg_score
+    avg_score = []
+    last_100_mean = 0
+    scores_global = []
+    scores_concur = deque(maxlen=MAXLEN)
     
-    # If errors, close environment 
-    except:
-        env.close()
-        print('There were some error wile training\n Exiting...')
-        return None, None, None
-        # exit()
+    print('Initializing training...\n')
+    for e in range(1, EPISODES+1):
+        
+        # Initialize Episode
+        agent.reset()
+        t0 = time.time()            
+        scores = np.zeros(num_agents)
+        env_info = env.reset(train_mode=True)[brain_name]
+        states = env_info.vector_observations
+        
+        
+        #for i in range(MAX_ITERS): # Run episode maximum until MAX_ITERS
+        while True:
+            
+            # Select an action for each Agent
+            actions = agent.act(states)
+            env_info = env.step(actions)[brain_name]          
+            
+            # Observe result of the action
+            next_states = env_info.vector_observations         
+            rewards = env_info.rewards                         
+            dones = env_info.local_done   
+                     
+            agent.step(states, actions, rewards, next_states, dones)
+            
+            # Store score result and move on
+            scores += env_info.rewards                         
+            
+            # Roll over states to next time step
+            states = next_states                               
+            
+            # Finish episode when one agent is done                
+            if np.any(dones):                                  
+                break                                
+        
+        
+        deltatime = time.time() - t0
+        
+        score = np.mean(scores)         # Avg score of the current episode
+        scores_concur.append(score)     # Append to our last_100 list
+        scores_global.append(score)     # Append to the global list of all episodes
+        avg_score.append(np.mean(scores_concur)) # Append to our smoothing avg list
+        
+        print('\rEpisode {}, Average last 100 scores: {:.2f}, Episode Duration: {:.2f}, \n'\
+              .format(e, avg_score[-1], deltatime))
+        
+        # If last 100 episodes average score is the best 100 average seen - Save Models & Update
+        if avg_score[-1] > last_100_mean:
+            torch.save(agent.actor_local.state_dict(), 'checkpoint_actor_{}.pth'.format(e))
+            torch.save(agent.critic_local.state_dict(), 'checkpoint_critic_{}.pth'.format(e))
+        last_100_mean = avg_score[-1]
+        
+        if np.mean(scores_concur) > 30:
+            print('\n\n Goal Achieved - 100 consecutives episodes with mean > 30')
+    
+    print('Closing envionment...\n')
+    env.close()
+    return agent, scores_global, avg_score
+    
+#    # If errors, close environment 
+#    except:
+#        env.close()
+#        print('There were some error wile training\n Exiting...')
+#        return None, None, None
+#        # exit()
 
 
 # Init Training
 # -------------
 
 agent, scores, avg_scores = train(ENV)
+
+# Save results
+# ------------
+
 with open('results.pickle', 'wb') as output:
     pickle.dump(scores, output, protocol=pickle.HIGHEST_PROTOCOL)
+
+# Plot results
+# ------------
 
 fig = plt.figure()
 ax = fig.add_subplot(111)
