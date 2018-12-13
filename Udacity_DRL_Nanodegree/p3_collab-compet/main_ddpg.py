@@ -29,8 +29,7 @@ NUM_SAMPLES = 10
 
 ENV = 'Tennis.app'
 
-test = False
-if test:
+def test_world():
     
     # Test World
     # ----------
@@ -42,63 +41,62 @@ if test:
     
     env_info = env.reset(train_mode=True)[brain_name]
     num_agents = len(env_info.agents)
-    print('Number of Agents: ', num_agents)
+    print('\nNumber of Agents: ', num_agents)
+    
+    def take_actions(env_info, brain):        
+        num_agents = len(env_info.agents)
+        action_size = brain.vector_action_space_size
+        actions = np.random.randn(num_agents, action_size) 
+        actions = np.clip(actions, -1, 1)                  
+        env_info = env.step(actions)[brain_name]           
+        next_states = env_info.vector_observations
+        return env_info, actions, next_states
     
     action_size = brain.vector_action_space_size
     states = env_info.vector_observations
     state_vector_names = ['racket x pos', 'racket y pos', 'racket x velocity', 'racket y velocity',
                           'ball x pos', 'ball y pos', 'ball x velocity', 'ball y velocity']
     
-    print('A state vector for one of the agent looks like:')
+    print('\nA state vector for one of the agent looks like:')
     state = states[0].reshape(3,8)
     table = create_table(state, state_vector_names)
     print(table)
         
     # But only the last row provides new information to each state, so we could simply get those values
+    print('\nKeeping only the last row would be: ')
     state0 = states[0].reshape(3,8)[-1]
     table0 = create_table(state0, state_vector_names)
     print(table0)
     
     # If we take a step in the environment
-    actions = np.random.randn(num_agents, action_size) # select an action (for each agent)
-    actions = np.clip(actions, -1, 1)                  # all actions between -1 and 1
-    env_info = env.step(actions)[brain_name]           # send all actions to tne environment
-    next_states = env_info.vector_observations         # get next state (for each agent)
-    
-    print('The reshaped state vector for the first agent looks like:')
+    env_info, _, next_states = take_actions(env_info, brain)
+
+    print('\n\nTaking 1 action, the state vector would look like::')
     state1 = next_states[0].reshape(3,8)
     table1 = create_table(state1, state_vector_names)
+    
     print('t = 0')
     print(table)
     print('t = 1')
     print(table1)
-    print('Only the last row is providing new information')
+    print('Only the last row is providing new information - It have just shifted \n\n')
+    print('Although, we can think than given the three provides temporal relationships \n\n')
     
     
     # If we take another step in the environment
-    actions = np.random.randn(num_agents, action_size) # select an action (for each agent)
-    actions = np.clip(actions, -1, 1)                  # all actions between -1 and 1
-    env_info = env.step(actions)[brain_name]           # send all actions to tne environment
-    next_states = env_info.vector_observations         # get next state (for each agent)
+    env_info, _, next_states = take_actions(env_info, brain)
     
-    print('The reshaped state vector for the first agent looks like:')
+    print('\n\nTaking another action to be sure')
     state2 = next_states[0].reshape(3,8)
     table2 = create_table(state2, state_vector_names)
-    print(table2)
     
-    
-    print('The reshaped state vector for the first agent looks like:')
-    next_table2 = BT()
-    next_state2 = next_states[0].reshape(3,8)
-    next_table2.column_headers = state_vector_names 
-    [next_table2.append_row(next_state[i].tolist()) for i in range(next_state.shape[0])]
     print('t = 0')
     print(table)
     print('t = 1')
-    print(next_table)
+    print(table1)
     print('t = 2')
-    print(next_table2)
-    print('Yes, only the last row is providing new information')
+    print(table2)
+    print('Yes, only the last row is providing new information !')
     
         
     env.close()
@@ -110,8 +108,12 @@ if test:
     state_size, action_size = brain.vector_observation_space_size, brain.vector_action_space_size
     agent = Agent(num_agents=num_agents, state_size=state_size, action_size=action_size)
     
-    print('Capacity of the Actor (# of parameters): ', count_parameters(agent.actor_local))
+    print('\n\nCapacity of the Actor (# of parameters): ', count_parameters(agent.actor_local))
     print('Capacity of the Critic (# of parameters): ', count_parameters(agent.critic_local))
+    return 
+
+
+# test_world()
 
         
 # Training
@@ -140,39 +142,40 @@ def train(env):
     print("Using brain {}".format(brain_name))
 
     
+    ## TODO - Question: Why brain.vector_observation_space_size = 8 but
+    # env_info.vector_observations[0] = 24 ?
+    
     print('Loading agent...\n')
     num_agents = len(env_info.agents)
-    state_size, action_size = brain.vector_observation_space_size, brain.vector_action_space_size
+#    state_size, action_size = brain.vector_observation_space_size, brain.vector_action_space_size
+    state_size, action_size = len(env_info.vector_observations[0]), brain.vector_action_space_size
     agent = Agent(num_agents=num_agents, state_size=state_size, action_size=action_size)
     print('Capacity of the Actor (# of parameters): ', count_parameters(agent.actor_local))
     print('Capacity of the Critic (# of parameters): ', count_parameters(agent.critic_local))    
             
     try:    
         
-        last_100_mean = []
+        avg_score = []
+        last_100_mean = 0
         scores_global = []
         scores_concur = deque(maxlen=MAXLEN)
-        
         
         print('Initializing training...\n')
         for e in range(1, EPISODES+1):
             
             # Initialize Episode
-            avg_score = list()
+            agent.reset()
+            t0 = time.time()            
             scores = np.zeros(num_agents)
             env_info = env.reset(train_mode=True)[brain_name]
-            states = env_info.vector_observations                  # get the current state (for each agent)
+            states = env_info.vector_observations
             
-            agent.reset()
-            t0 = time.time()
             
-            # Run episode maximum until MAX_ITERS
-            #for i in range(MAX_ITERS):
+            #for i in range(MAX_ITERS): # Run episode maximum until MAX_ITERS
             while True:
                 
                 # Select an action for each Agent
-                ## NEED TO DO THIS? state = states[0].reshape(3,8)[-1,:]
-                actions = agent.act(state)
+                actions = agent.act(states)
                 env_info = env.step(actions)[brain_name]          
                 
                 # Observe result of the action
@@ -195,21 +198,22 @@ def train(env):
             
             deltatime = time.time() - t0
             
-            score = np.mean(scores)
-            scores_concur.append(score)
-            scores_global.append(score)
-            avg_score.append(scores_concur)
+            score = np.mean(scores)         # Avg score of the current episode
+            scores_concur.append(score)     # Append to our last_100 list
+            scores_global.append(score)     # Append to the global list of all episodes
+            avg_score.append(np.mean(scores_concur)) # Append to our smoothing avg list
             
             print('\rEpisode {}, Average last 100 scores: {:.2f}, Episode Duration: {:.2f}, \n'\
-                  .format(e, avg_score, deltatime))
+                  .format(e, avg_score[-1], deltatime))
             
-            # If last 100 episodes average score is the best 100 average seen - Save Models
-            if avg_score > last_100_mean:
+            # If last 100 episodes average score is the best 100 average seen - Save Models & Update
+            if avg_score[-1] > last_100_mean:
                 torch.save(agent.actor_local.state_dict(), 'checkpoint_actor_{}.pth'.format(e))
                 torch.save(agent.critic_local.state_dict(), 'checkpoint_critic_{}.pth'.format(e))
+            last_100_mean = avg_score[-1]
             
-            # Update current 100 mean            
-            last_100_mean = avg_score
+            if np.mean(scores_concur) > 30:
+                print('\n\n Goal Achieved - 100 consecutives episodes with mean > 30')
         
         print('Closing envionment...\n')
         env.close()
