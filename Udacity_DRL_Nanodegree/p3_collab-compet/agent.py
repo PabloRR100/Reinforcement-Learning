@@ -113,6 +113,7 @@ class Agent():
         self.actor_optimizer.step()
 
         # ----------------------- update target networks ----------------------- #
+        
         self.soft_update(self.critic_local, self.critic_target, TAU)
         self.soft_update(self.actor_local, self.actor_target, TAU)                     
 
@@ -164,7 +165,8 @@ class ReplayBuffer:
         ## TODO: why returns 512 if the batchsize is 256!????
         ''' Randomly sample a batch of experiences from memory '''
         experiences = random.sample(self.memory, k=self.batch_size)
-
+        
+        ## TODO: experiences is a list of 256 Experience objects but states hast 512x24! HOW !?
         states = torch.from_numpy(np.vstack([e.state for e in experiences if e is not None])).float().to(self.device)
         actions = torch.from_numpy(np.vstack([e.action for e in experiences if e is not None])).float().to(self.device)
         rewards = torch.from_numpy(np.vstack([e.reward for e in experiences if e is not None])).float().to(self.device)
