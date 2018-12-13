@@ -2,6 +2,8 @@
 # -*- coding: utf-8 -*-
 
 import time
+from beautifultable import BeautifulTable as BT
+
 
 # Decorator to time function executions
 def timeit(method):
@@ -17,7 +19,6 @@ def timeit(method):
         return result
     return timed
 
-
 def timer(t0):
     deltatime = time.time() - t0
     if deltatime > 60:
@@ -29,3 +30,14 @@ def timer(t0):
 def count_parameters(model):
     ''' Count the parameters of a model '''
     return sum(p.numel() for p in model.parameters())
+
+
+# Create Table
+def create_table(state, names):
+    table = BT()
+    table.column_headers = names 
+    if state.shape[0] == 8:
+        table.append_row(state.tolist())
+    else:
+        [table.append_row(state[i].tolist()) for i in range(state.shape[0])]
+    return table

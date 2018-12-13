@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """
 @author: pabloruizruiz
-Collaboration and Competition - Unity Environment - Tennis Game
+Collaboration and Competition - Unity Environment - Tennis Game - DDPG Algorithm
 """
 
 import time
@@ -16,7 +16,7 @@ from beautifultable import BeautifulTable as BT
 
 from agent import Agent
 from unityagents import UnityEnvironment
-from utils import timeit, count_parameters
+from utils import timeit, count_parameters, create_table
 
 cuda = True if torch.cuda.is_available() else False
 gpus = True if torch.cuda.device_count() > 1 else False
@@ -44,24 +44,63 @@ if test:
     num_agents = len(env_info.agents)
     print('Number of Agents: ', num_agents)
     
+    action_size = brain.vector_action_space_size
     states = env_info.vector_observations
     state_vector_names = ['racket x pos', 'racket y pos', 'racket x velocity', 'racket y velocity',
                           'ball x pos', 'ball y pos', 'ball x velocity', 'ball y velocity']
     
     print('A state vector for one of the agent looks like:')
     state = states[0].reshape(3,8)
-    table = BT()
-    table.column_headers = state_vector_names 
-    [table.append_row(state[i].tolist()) for i in range(state.shape[0])]
+    table = create_table(state, state_vector_names)
     print(table)
-    
+        
     # But only the last row provides new information to each state, so we could simply get those values
-    state = states[0].reshape(3,8)[-1]
-    table = BT()
-    table.column_headers = state_vector_names 
-    table.append_row(state.tolist())
-    print(table)
+    state0 = states[0].reshape(3,8)[-1]
+    table0 = create_table(state0, state_vector_names)
+    print(table0)
     
+    # If we take a step in the environment
+    actions = np.random.randn(num_agents, action_size) # select an action (for each agent)
+    actions = np.clip(actions, -1, 1)                  # all actions between -1 and 1
+    env_info = env.step(actions)[brain_name]           # send all actions to tne environment
+    next_states = env_info.vector_observations         # get next state (for each agent)
+    
+    print('The reshaped state vector for the first agent looks like:')
+    state1 = next_states[0].reshape(3,8)
+    table1 = create_table(state1, state_vector_names)
+    print('t = 0')
+    print(table)
+    print('t = 1')
+    print(table1)
+    print('Only the last row is providing new information')
+    
+    
+    # If we take another step in the environment
+    actions = np.random.randn(num_agents, action_size) # select an action (for each agent)
+    actions = np.clip(actions, -1, 1)                  # all actions between -1 and 1
+    env_info = env.step(actions)[brain_name]           # send all actions to tne environment
+    next_states = env_info.vector_observations         # get next state (for each agent)
+    
+    print('The reshaped state vector for the first agent looks like:')
+    state2 = next_states[0].reshape(3,8)
+    table2 = create_table(state2, state_vector_names)
+    print(table2)
+    
+    
+    print('The reshaped state vector for the first agent looks like:')
+    next_table2 = BT()
+    next_state2 = next_states[0].reshape(3,8)
+    next_table2.column_headers = state_vector_names 
+    [next_table2.append_row(next_state[i].tolist()) for i in range(next_state.shape[0])]
+    print('t = 0')
+    print(table)
+    print('t = 1')
+    print(next_table)
+    print('t = 2')
+    print(next_table2)
+    print('Yes, only the last row is providing new information')
+    
+        
     env.close()
     
     
@@ -88,12 +127,17 @@ def train(env):
     global LEARN_PERIOD
     global NUM_SAMPLES
     
+    table = BT()
+    table.column_headers = ['Max Iters', 'Epochs', 'Learn Period', 'Num Samples']
+    table.append_row([MAXLEN, EPISODES, LEARN_PERIOD, NUM_SAMPLES])
+
     print('Loading environmnet...\n')
+    print(table)
     env = UnityEnvironment(file_name=ENV)
     brain_name = env.brain_names[0]
     brain = env.brains[brain_name]
     env_info = env.reset(train_mode=True)[brain_name]
-    
+    print("Using brain {}".format(brain_name))
 
     
     print('Loading agent...\n')
@@ -101,14 +145,14 @@ def train(env):
     state_size, action_size = brain.vector_observation_space_size, brain.vector_action_space_size
     agent = Agent(num_agents=num_agents, state_size=state_size, action_size=action_size)
     print('Capacity of the Actor (# of parameters): ', count_parameters(agent.actor_local))
-    print('Capacity of the Critic (# of parameters): ', count_parameters(agent.critic_local))
-
-    
-    last_100_mean = []
-    scores_global = []
-    scores_concur = deque(maxlen=MAXLEN)
-    
-    try:
+    print('Capacity of the Critic (# of parameters): ', count_parameters(agent.critic_local))    
+            
+    try:    
+        
+        last_100_mean = []
+        scores_global = []
+        scores_concur = deque(maxlen=MAXLEN)
+        
         
         print('Initializing training...\n')
         for e in range(1, EPISODES+1):
@@ -127,7 +171,8 @@ def train(env):
             while True:
                 
                 # Select an action for each Agent
-                actions = agent.act(states)
+                ## NEED TO DO THIS? state = states[0].reshape(3,8)[-1,:]
+                actions = agent.act(state)
                 env_info = env.step(actions)[brain_name]          
                 
                 # Observe result of the action
@@ -173,9 +218,9 @@ def train(env):
     # If errors, close environment 
     except:
         env.close()
-        print('There were some error wile training')
-        return None, None
-
+        print('There were some error wile training\n Exiting...')
+        return None, None, None
+        # exit()
 
 
 # Init Training

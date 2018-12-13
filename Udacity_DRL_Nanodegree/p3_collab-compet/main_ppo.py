@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """
 @author: pabloruizruiz
-Collaboration and Competition - Unity Environment - Tennis Game
+Collaboration and Competition - Unity Environment - Tennis Game - PPO Algorithm
 """
 
 import time
