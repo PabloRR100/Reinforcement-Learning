@@ -28,20 +28,14 @@ This is opposed to the DQN implementation where the Target Network is updated ev
 
 
 ```python
-# Init Training
-# -------------
-
-results = dict()
-agent, scores, avg_scores = train(ENV)
-```
 
     Loading environmnet...
     
-    +-----------+--------+--------------+-------------+
-    | Max Iters | Epochs | Learn Period | Num Samples |
-    +-----------+--------+--------------+-------------+
-    |    100    | 10000  |      20      |     10      |
-    +-----------+--------+--------------+-------------+
+    +--------+--------------+-------------+
+    | Epochs | Learn Period | Num Samples |
+    +--------+--------------+-------------+
+    | 10000  |      20      |     10      |
+    +--------+--------------+-------------+
 
 
     INFO:unityagents:
