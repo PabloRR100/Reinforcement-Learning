@@ -146,6 +146,7 @@ This is opposed to the DQN implementation where the Target Network is updated ev
     Closing envionment...
     
     'train'  3046861.00 ms
+```    
 
 
 ## Results 
