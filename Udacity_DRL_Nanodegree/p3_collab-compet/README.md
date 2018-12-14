@@ -8,7 +8,7 @@
 
 ### Introduction
 
-For this project, you will work with the [Tennis](https://github.com/Unity-Technologies/ml-agents/blob/master/docs/Learning-Environment-Examples.md#tennis) environment.
+This project solves the [Tennis](https://github.com/Unity-Technologies/ml-agents/blob/master/docs/Learning-Environment-Examples.md#tennis) environment of Unity.
 
 ![Trained Agent][image1]
 
@@ -37,26 +37,31 @@ The environment is considered solved, when the average (over 100 episodes) of th
 
 2. Place the file in the DRLND GitHub repository, in the `p3_collab-compet/` folder, and unzip (or decompress) the file. 
 
-### Instructions
 
-Follow the instructions in `Tennis.ipynb` to get started with training your own agent!  
+### Project Organization
 
-### (Optional) Challenge: Crawler Environment
+The instructions to solve the environment can be found in `Tennis_Submission.ipynb`.  
+In order to create your own agent, you should modify the files ```networks.py``` or ```agent.py```.  
 
-After you have successfully completed the project, you might like to solve the more difficult **Soccer** environment.
+#### ```Networks.py```
+In this script you will find the neural networks (in PyTorch) used as the brains of the Actor and the Critic.  
+Feel free to modify them to increment their capacity. Note that bigger networks will probably have more ability to learn but at the cost of more training time, since there are more parameters to adjust (or learn).  
 
-![Soccer][image2]
+#### ```Agent.py```
+In this script you will find the Agent class.  
+This class will import the Actor and Critic brains to the agent.  
+Also, there ReplayBuffer class will be instantiated as the agent's memory. Try also modifying the hyperparamters of this memory.   
 
-In this environment, the goal is to train a team of agents to play soccer.  
+The agents have the ability to:  
+ - Act -> Given a policy and a state, returns an action  
+ - Step -> Add an experience (tuple) to the memory
+ - SampleandLearn -> Use a random sampling from that memory to call learn function
+ - Learn -> Update the Actor and Critic == Update the Policy and the Value Parameters
+ - Soft Target -> Soft update to melt the target parameters to the regural parameters
 
-You can read more about this environment in the ML-Agents GitHub [here](https://github.com/Unity-Technologies/ml-agents/blob/master/docs/Learning-Environment-Examples.md#soccer-twos).  To solve this harder task, you'll need to download a new Unity environment.  (**Note**: Udacity students should not submit a project with this new environment.)
+### Results
+The results obtained during the training and the metrics of performance can be found in the [report][1] attached.  
+The saved models (Checkpoints) can be found in the [model_backups][2] folder.
 
-You need only select the environment that matches your operating system:
-- Linux: [click here](https://s3-us-west-1.amazonaws.com/udacity-drlnd/P3/Soccer/Soccer_Linux.zip)
-- Mac OSX: [click here](https://s3-us-west-1.amazonaws.com/udacity-drlnd/P3/Soccer/Soccer.app.zip)
-- Windows (32-bit): [click here](https://s3-us-west-1.amazonaws.com/udacity-drlnd/P3/Soccer/Soccer_Windows_x86.zip)
-- Windows (64-bit): [click here](https://s3-us-west-1.amazonaws.com/udacity-drlnd/P3/Soccer/Soccer_Windows_x86_64.zip)
-
-Then, place the file in the `p3_collab-compet/` folder in the DRLND GitHub repository, and unzip (or decompress) the file.  Next, open `Soccer.ipynb` and follow the instructions to learn how to use the Python API to control the agent.
-
-(_For AWS_) If you'd like to train the agents on AWS (and have not [enabled a virtual screen](https://github.com/Unity-Technologies/ml-agents/blob/master/docs/Training-on-Amazon-Web-Service.md)), then please use [this link](https://s3-us-west-1.amazonaws.com/udacity-drlnd/P3/Soccer/Soccer_Linux_NoVis.zip) to obtain the "headless" version of the environment.  You will **not** be able to watch the agents without enabling a virtual screen, but you will be able to train the agents.  (_To watch the agents, you should follow the instructions to [enable a virtual screen](https://github.com/Unity-Technologies/ml-agents/blob/master/docs/Training-on-Amazon-Web-Service.md), and then download the environment for the **Linux** operating system above._)
+[1]: https://github.com/PabloRR100/Reinforcement-Learning/tree/master/rlnd/p3_collab-compet/report
+[2]: https://github.com/PabloRR100/Reinforcement-Learning/tree/master/rlnd/p3_collab-compet/model_backups
