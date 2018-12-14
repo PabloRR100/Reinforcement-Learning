@@ -53,36 +53,49 @@ class Agent():
     def step(self, state, action, reward, next_state, done):
         ''' Save experience in replay memory, and use random sample from buffer to learn '''
         
-        # Save experience into memory
-        self.memory.add(state, action, reward, next_state, done)
-        
-        # Learn from memory once there is enough samples (BATCH_SIZE) available 
+        # Save experience into memory __for each agent__
+        for i in range(self.num_agents):
+            self.memory.add(state[i,:], action[i,:], reward[i], next_state[i,:], done[i])
+
+        # Learn, if enough samples are available in memory
         if len(self.memory) > BATCH_SIZE:
             experiences = self.memory.sample()
             self.learn(experiences, GAMMA)
+
                             
-    def act(self, state, add_noise=True):
+    def act(self, states, add_noise=True):
         ''' Returns actions for given state as per current policy '''
-        state = torch.from_numpy(state).float().to(device)
-       
+        states = torch.from_numpy(states).float().to(device)
+        actions = np.zeros((self.num_agents, self.action_size))
+         
         # Deactivate gradients and perform forward pass
         self.actor_local.eval()
         with torch.no_grad():
-            action = self.actor_local(state).cpu().data.numpy()
+            for agent_num, state in enumerate(states):
+                action = self.actor_local(state).cpu().data.numpy()
+                actions[agent_num, :] = action
         self.actor_local.train()
         
         if add_noise:
             for a in range(self.num_agents):
-                action[a] += self.noise.sample()
+                actions[a,:] += self.noise.sample()
         # Clip action 
-        return np.clip(action, -1, 1)
+        return np.clip(actions, -1, 1)
+
 
     def reset(self):
         self.noise.reset()
 
+
     def learn(self, experiences, gamma):
         ''' 
         Update policy and value parameters using given batch of experience tuples.
+        
+        Q_targets = r + γ * critic_target(next_state, actor_target(next_state))
+        where:
+            actor_target(state) -> action
+            critic_target(state, action) -> Q-value
+            experiences (Tuple[torch.Tensor]): tuple of (s, a, r, s', done) tuples 
         '''
         
         states, actions, rewards, next_states, dones = experiences
@@ -122,6 +135,7 @@ class Agent():
         for target_param, local_param in zip(target_model.parameters(), local_model.parameters()):
             target_param.data.copy_(tau*local_param.data + (1.0-tau)*target_param.data)
 
+
 class OUNoise:
     ''' Ornstein-Uhlenbeck process '''
 
@@ -144,13 +158,14 @@ class OUNoise:
         self.state = x + dx
         return self.state
 
+
 class ReplayBuffer:
     ''' Fixed-size buffer to store experience tuples '''
 
     def __init__(self, action_size, buffer_size, batch_size, seed, device):
         ''' Initialize a ReplayBuffer object '''
         self.action_size = action_size
-        self.memory = deque(maxlen=buffer_size)  # internal memory (deque)
+        self.memory = deque(maxlen=buffer_size)
         self.batch_size = batch_size
         self.experience = namedtuple("Experience", field_names=["state", "action", "reward", "next_state", "done"])
         self.seed = random.seed(seed)
@@ -165,8 +180,12 @@ class ReplayBuffer:
         ## TODO: why returns 512 if the batchsize is 256!????
         ''' Randomly sample a batch of experiences from memory '''
         experiences = random.sample(self.memory, k=self.batch_size)
+
+        # print('Memory Batch Size: ', self.batch_size)        
+        # print('Experiences is a list of {} Experience objects'.format(len(experiences)))
         
-        ## TODO: experiences is a list of 256 Experience objects but states hast 512x24! HOW !?
+        ## TODO: experiences is a list of 256 Experience objects but states hast 512x24! HOW !? 
+        ## TODO: Could it be because is 256 per Agent?
         states = torch.from_numpy(np.vstack([e.state for e in experiences if e is not None])).float().to(self.device)
         actions = torch.from_numpy(np.vstack([e.action for e in experiences if e is not None])).float().to(self.device)
         rewards = torch.from_numpy(np.vstack([e.reward for e in experiences if e is not None])).float().to(self.device)

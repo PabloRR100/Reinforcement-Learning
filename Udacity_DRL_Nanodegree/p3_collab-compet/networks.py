@@ -46,7 +46,7 @@ class Critic(nn.Module):
         self.seed = torch.manual_seed(seed)
         
         self.fcs1 = nn.Linear(state_size, fcs1_units)
-        self.fc2 = nn.Linear(selk, fc2_units)
+        self.fc2 = nn.Linear(fcs1_units+action_size, fc2_units)
         self.fc3 = nn.Linear(fc2_units, fc3_units)
         self.fc4 = nn.Linear(fc3_units, 1)
         

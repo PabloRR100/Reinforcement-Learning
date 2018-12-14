@@ -5,6 +5,8 @@
 Collaboration and Competition - Unity Environment - Tennis Game - DDPG Algorithm
 """
 
+import os
+import glob
 import time
 import torch
 import pickle
@@ -203,17 +205,24 @@ def train(env):
         scores_global.append(score)     # Append to the global list of all episodes
         avg_score.append(np.mean(scores_concur)) # Append to our smoothing avg list
         
-        print('\rEpisode {}, Average last 100 scores: {:.2f}, Episode Duration: {:.2f}, \n'\
-              .format(e, avg_score[-1], deltatime))
+        if e % 100 == 0:
+            print('\rEpisode {}, Average last 100 scores: {:.2f}, Episode Duration: {:.2f}, \n'\
+                  .format(e, avg_score[-1], deltatime))
         
         # If last 100 episodes average score is the best 100 average seen - Save Models & Update
         if avg_score[-1] > last_100_mean:
+            
+            # Delete previous models
+            models = glob.glob('*.pth')
+            for m in models:
+                os.remove(m)
+                    
             torch.save(agent.actor_local.state_dict(), 'checkpoint_actor_{}.pth'.format(e))
             torch.save(agent.critic_local.state_dict(), 'checkpoint_critic_{}.pth'.format(e))
         last_100_mean = avg_score[-1]
         
-        if np.mean(scores_concur) > 30:
-            print('\n\n Goal Achieved - 100 consecutives episodes with mean > 30')
+        if np.mean(scores_concur) > 0.5:
+            print('\n\n Goal Achieved - 100 consecutives episodes with mean > 0.5')
     
     print('Closing envionment...\n')
     env.close()
@@ -232,11 +241,13 @@ def train(env):
 
 agent, scores, avg_scores = train(ENV)
 
+
 # Save results
 # ------------
 
 with open('results.pickle', 'wb') as output:
     pickle.dump(scores, output, protocol=pickle.HIGHEST_PROTOCOL)
+
 
 # Plot results
 # ------------
