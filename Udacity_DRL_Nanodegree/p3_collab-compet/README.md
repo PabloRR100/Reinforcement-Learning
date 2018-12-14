@@ -1,7 +1,6 @@
 [//]: # (Image References)
 
 [image1]: https://user-images.githubusercontent.com/10624937/42135623-e770e354-7d12-11e8-998d-29fc74429ca2.gif "Trained Agent"
-[image2]: https://user-images.githubusercontent.com/10624937/42135622-e55fb586-7d12-11e8-8a54-3c31da15a90a.gif "Soccer"
 
 
 # Project 3: Collaboration and Competition
@@ -63,5 +62,5 @@ The agents have the ability to:
 The results obtained during the training and the metrics of performance can be found in the [report][1] attached.  
 The saved models (Checkpoints) can be found in the [model_backups][2] folder.
 
-[1]: https://github.com/PabloRR100/Reinforcement-Learning/tree/master/rlnd/p3_collab-compet/report
-[2]: https://github.com/PabloRR100/Reinforcement-Learning/tree/master/rlnd/p3_collab-compet/model_backups
+[1]: https://github.com/PabloRR100/Reinforcement-Learning/tree/master/Udacity_DRL_Nanodegree/p3_collab-compet/report
+[2]: https://github.com/PabloRR100/Reinforcement-Learning/tree/master/Udacity_DRL_Nanodegree/p3_collab-compet/model_backups
