@@ -60,7 +60,9 @@ The agents have the ability to:
 
 ### Results
 The results obtained during the training and the metrics of performance can be found in the [report][1] attached.  
-The saved models (Checkpoints) can be found in the [model_backups][2] folder.
+The saved models (Checkpoints) can be found in the [model_backups folder][2].
+The saved scores to replicate the graph can be found in the [results folder][3]
 
 [1]: https://github.com/PabloRR100/Reinforcement-Learning/tree/master/Udacity_DRL_Nanodegree/p3_collab-compet/report
 [2]: https://github.com/PabloRR100/Reinforcement-Learning/tree/master/Udacity_DRL_Nanodegree/p3_collab-compet/model_backups
+[3]: https://github.com/PabloRR100/Reinforcement-Learning/tree/master/Udacity_DRL_Nanodegree/p3_collab-compet/results
