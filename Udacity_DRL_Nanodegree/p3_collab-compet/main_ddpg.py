@@ -7,7 +7,7 @@ Collaboration and Competition - Unity Environment - Tennis Game - DDPG Algorithm
 
 TODO LIST:
     - Increase the Batch Size to 1024
-    
+    - Dont call learn every iteration (call it 10 times every 5-10)
 
 """
 
