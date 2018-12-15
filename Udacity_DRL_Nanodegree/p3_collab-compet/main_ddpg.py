@@ -3,6 +3,12 @@
 """
 @author: pabloruizruiz
 Collaboration and Competition - Unity Environment - Tennis Game - DDPG Algorithm
+
+
+TODO LIST:
+    - Increase the Batch Size to 1024
+    
+
 """
 
 import os
