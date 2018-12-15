@@ -9,7 +9,10 @@ TODO LIST:
     - Increase the Batch Size to 1024
     - Dont call learn every iteration (call it 10 times every 5-10)
     - Have a different noise process for both the agents
-
+    - Try having decreasing hidden units (critic)
+    
+    - Provide details about the hyperparameters in your report along with the network architecture
+    - Provide full instructions on how to run the project
 
 """
 
