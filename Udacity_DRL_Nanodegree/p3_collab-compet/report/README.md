@@ -25,6 +25,19 @@ This strategy consists on *slowly blending* the Regular Network weights into the
 This is opposed to the DQN implementation where the Target Network is updated every 10000 steps by coping the weights of the Regular Network into the Target Network. The Target Network then is fixed for a long time and then it sufferts a big update, intead of the slow blending mentioned above.
 
 
+##### Hyperparameters Used
+- MAXLEN = 100 *# Consecutive number of scores to Average*
+- EPISODES = 3000
+- BUFFER_SIZE = int(1e5)  *# replay buffer size*
+- BATCH_SIZE = 1024       *# minibatch size*
+- GAMMA = 0.99            *# discount factor*
+- TAU = 1e-3              *# for soft update of target parameters*
+- LR_ACTOR = 1e-4         *# learning rate of the actor*
+- LR_CRITIC = 1e-4        *# learning rate of the critic*
+- WEIGHT_DECAY = 0        *# L2 weight decay*
+
+- UPDATE_EVERY = 10       *# Update weights every X timesteps*
+- NUMBER_OF_UPDATES = 10  *# When update, learn X times*
 
 
 ```python
