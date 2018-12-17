@@ -37,8 +37,9 @@ gpus = True if torch.cuda.device_count() > 1 else False
 MAXLEN = 100
 EPISODES = 3000
 PRINT_EVERY = 100
-LEARN_PERIOD = 20
-NUM_SAMPLES = 10
+
+#LEARN_PERIOD = 20
+#NUM_SAMPLES = 10
 
 ENV = 'Tennis.app'
 
@@ -139,15 +140,15 @@ def train(env):
     global MAXLEN
     global EPISODES
     global PRINT_EVERY
-    global LEARN_PERIOD
-    global NUM_SAMPLES
-    
-    table = BT()
-    table.column_headers = ['Max Iters', 'Epochs', 'Learn Period', 'Num Samples']
-    table.append_row([MAXLEN, EPISODES, LEARN_PERIOD, NUM_SAMPLES])
+#    global LEARN_PERIOD
+#    global NUM_SAMPLES
+#    
+#    table = BT()
+#    table.column_headers = ['Max Iters', 'Epochs', 'Learn Period', 'Num Samples']
+#    table.append_row([MAXLEN, EPISODES, LEARN_PERIOD, NUM_SAMPLES])
 
     print('Loading environmnet...\n')
-    print(table)
+#    print(table)
     env = UnityEnvironment(file_name=ENV)
     brain_name = env.brain_names[0]
     brain = env.brains[brain_name]
