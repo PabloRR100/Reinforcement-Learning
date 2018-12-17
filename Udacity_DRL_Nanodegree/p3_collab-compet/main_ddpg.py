@@ -284,7 +284,7 @@ plt.show()
 ## ------------------
 #
 #agent = Agent(state_size=state_size, action_size=action_size)
-#agent.actor_local.load_state_dict(torch.load('checkpoint_actor.pth'))
+#agent.actor_local.load_stagte_dict(torch.load('checkpoint_actor.pth'))
 #agent.critic_local.load_state_dict(torch.load('checkpoint_critic.pth'))
 #
 #with open('results.pickle', 'rb') as input:
