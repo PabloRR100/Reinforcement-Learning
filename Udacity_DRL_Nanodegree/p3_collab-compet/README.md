@@ -2,7 +2,6 @@
 
 [image1]: https://user-images.githubusercontent.com/10624937/42135623-e770e354-7d12-11e8-998d-29fc74429ca2.gif "Trained Agent"
 
-
 # Project 3: Collaboration and Competition
 
 ### Introduction
@@ -46,6 +45,10 @@ In order to create your own agent, you should modify the files ```networks.py```
 In this script you will find the neural networks (in PyTorch) used as the brains of the Actor and the Critic.  
 Feel free to modify them to increment their capacity. Note that bigger networks will probably have more ability to learn but at the cost of more training time, since there are more parameters to adjust (or learn).  
 
+The general structured used in the Actor Critic models is represented here:  
+![actcrit][actor_critic]  
+The Actor will take in the states (or observations) and wil provide what the actions would be. These actions are concatenated to the tranformation that the first layer applies to the (batch sise number of) states, and forward until providing a single State-Value *V*.
+
 #### ```Agent.py```
 In this script you will find the Agent class.  
 This class will import the Actor and Critic brains to the agent.  
@@ -53,8 +56,7 @@ Also, there ReplayBuffer class will be instantiated as the agent's memory. Try a
 
 The agents have the ability to:  
  - Act -> Given a policy and a state, returns an action  
- - Step -> Add an experience (tuple) to the memory
- - SampleandLearn -> Use a random sampling from that memory to call learn function
+ - Step -> Add an experience (tuple) to the memory and learn *X* consecutive times after every *Y* time steps. (Hyperparamers)
  - Learn -> Update the Actor and Critic == Update the Policy and the Value Parameters
  - Soft Target -> Soft update to melt the target parameters to the regural parameters
 
@@ -66,3 +68,4 @@ The saved scores to replicate the graph can be found in the [results folder][3]
 [1]: https://github.com/PabloRR100/Reinforcement-Learning/tree/master/Udacity_DRL_Nanodegree/p3_collab-compet/report
 [2]: https://github.com/PabloRR100/Reinforcement-Learning/tree/master/Udacity_DRL_Nanodegree/p3_collab-compet/model_backups
 [3]: https://github.com/PabloRR100/Reinforcement-Learning/tree/master/Udacity_DRL_Nanodegree/p3_collab-compet/results
+[actor_critic]: https://github.com/PabloRR100/Reinforcement-Learning/blob/master/Udacity_DRL_Nanodegree/p3_collab-compet/images/actor_critics.png?raw=true
