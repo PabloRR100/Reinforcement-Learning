@@ -47,8 +47,20 @@ Feel free to modify them to increment their capacity. Note that bigger networks 
 
 The general structured used in the Actor Critic models is represented here:  
 ![actcrit][actor_critic]  
-The Actor will take in the states (or observations) and wil provide what the actions would be. These actions are concatenated to the tranformation that the first layer applies to the (batch sise number of) states, and forward until providing a single State-Value *V*.
+The Actor will take in the states (or observations) and wil provide what the actions would be. These actions are concatenated to the tranformation that the first layer applies to the (batch sise number of) states, and forward until providing a single State-Value *V*.   
 
+In this particular case, I have used:   
+- Actor
+    - fc1 = (states, 256)
+    - fc2 = (256, 192)
+    - fc3 = (192, 128)
+    - fc4 = (128, actions)
+    
+- Critic
+    - fcs1 = (states, 256)
+    - fc2 = (256+actions, 128)
+    - fc3 = (128, 1)
+ 
 #### ```Agent.py```
 In this script you will find the Agent class.  
 This class will import the Actor and Critic brains to the agent.  
