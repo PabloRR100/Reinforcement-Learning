@@ -6,13 +6,13 @@ Collaboration and Competition - Unity Environment - Tennis Game - DDPG Algorithm
 
 
 TODO LIST:
-    - Increase the Batch Size to 1024
-    - Dont call learn every iteration (call it 10 times every 5-10)
+    - Increase the Batch Size to 1024 - DONE
+    - Dont call learn every iteration (call it 10 times every 5-10) - DONE
     - Have a different noise process for both the agents
-    - Try having decreasing hidden units (critic)
+    - Try having decreasing hidden units (critic) - DONE
     
-    - Provide details about the hyperparameters in your report along with the network architecture
-    - Provide full instructions on how to run the project
+    - Provide details about the hyperparameters in your report along with the network architecture - DONE
+    - Provide full instructions on how to run the project - DONE
 
 """
 
@@ -177,6 +177,7 @@ def train(env):
     for e in range(1, EPISODES+1):
         
         # Initialize Episode
+        t = 0 
         agent.reset()
         t0 = time.time()            
         scores = np.zeros(num_agents)
@@ -196,13 +197,15 @@ def train(env):
             rewards = env_info.rewards                         
             dones = env_info.local_done   
                      
-            agent.step(states, actions, rewards, next_states, dones)
+            agent.step(states, actions, rewards, next_states, dones, t)
             
             # Store score result and move on
             scores += env_info.rewards                         
             
             # Roll over states to next time step
             states = next_states                               
+            
+            t += 1
             
             # Finish episode when one agent is done                
             if np.any(dones):                                  
