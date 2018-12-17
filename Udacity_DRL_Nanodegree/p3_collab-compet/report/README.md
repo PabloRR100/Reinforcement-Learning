@@ -164,10 +164,13 @@ This is opposed to the DQN implementation where the Target Network is updated ev
 
 ## Results 
 
-![png](output_12_0.png)
-
 The previous submission without the corrections of these one, I reached 10.000 because I still had GPU hours.  
-It looks like this time the tr
+This was the results:
+![png](output_12_0_old.png)
+
+The current results are:  
+![png](output_12_0.png)  
+It looks like this time the learning started later, I still don't know it will succeed or it will happen the same.  
 
 
 ## Future Improvements  
