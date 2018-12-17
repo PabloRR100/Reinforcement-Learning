@@ -165,7 +165,8 @@ This is opposed to the DQN implementation where the Target Network is updated ev
 ## Results 
 
 The previous submission without the corrections of these one, I reached 10.000 because I still had GPU hours.  
-This was the results:
+This was the results:  
+
 ![png](output_12_0_old.png)
 
 The current results are:  
