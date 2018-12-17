@@ -76,95 +76,98 @@ This is opposed to the DQN implementation where the Target Network is updated ev
     Capacity of the Critic (# of parameters):  105729
     Initializing training...
     
-    Episode 250, Average last 100 scores: -0.00, Episode Duration: 0.21, 
+    Episode 100, Average last 100 scores: -0.00, Episode Duration: 2.00, 
     
-    Episode 500, Average last 100 scores: -0.00, Episode Duration: 0.21, 
+    Episode 200, Average last 100 scores: -0.00, Episode Duration: 2.18, 
     
-    Episode 750, Average last 100 scores: -0.00, Episode Duration: 0.20, 
+    Episode 300, Average last 100 scores: -0.00, Episode Duration: 2.08, 
     
-    Episode 1000, Average last 100 scores: 0.00, Episode Duration: 0.21, 
+    Episode 400, Average last 100 scores: -0.00, Episode Duration: 2.03, 
     
-    Episode 1250, Average last 100 scores: -0.00, Episode Duration: 0.21, 
+    Episode 500, Average last 100 scores: -0.00, Episode Duration: 2.04, 
     
-    Episode 1500, Average last 100 scores: 0.00, Episode Duration: 0.20, 
+    Episode 600, Average last 100 scores: -0.00, Episode Duration: 2.08, 
     
-    Episode 1750, Average last 100 scores: 0.02, Episode Duration: 0.50, 
+    Episode 700, Average last 100 scores: -0.00, Episode Duration: 2.23, 
     
-    Episode 2000, Average last 100 scores: 0.04, Episode Duration: 0.44, 
+    Episode 800, Average last 100 scores: -0.00, Episode Duration: 2.08, 
     
-    Episode 2250, Average last 100 scores: 0.04, Episode Duration: 0.45, 
+    Episode 900, Average last 100 scores: -0.00, Episode Duration: 2.07, 
     
-    Episode 2500, Average last 100 scores: 0.06, Episode Duration: 0.51, 
+    Episode 1000, Average last 100 scores: -0.00, Episode Duration: 2.08, 
     
-    Episode 2750, Average last 100 scores: 0.05, Episode Duration: 0.22, 
+    Episode 1100, Average last 100 scores: -0.00, Episode Duration: 2.35, 
     
-    Episode 3000, Average last 100 scores: 0.04, Episode Duration: 0.45, 
+    Episode 1200, Average last 100 scores: -0.00, Episode Duration: 2.12, 
     
-    Episode 3250, Average last 100 scores: 0.03, Episode Duration: 0.51, 
+    Episode 1300, Average last 100 scores: -0.00, Episode Duration: 2.16, 
     
-    Episode 3500, Average last 100 scores: 0.02, Episode Duration: 0.25, 
+    Episode 1400, Average last 100 scores: -0.00, Episode Duration: 2.15, 
     
-    Episode 3750, Average last 100 scores: 0.04, Episode Duration: 0.44, 
+    Episode 1500, Average last 100 scores: -0.00, Episode Duration: 2.14, 
     
-    Episode 4000, Average last 100 scores: 0.04, Episode Duration: 0.45, 
+    Episode 1600, Average last 100 scores: -0.00, Episode Duration: 2.17, 
     
-    Episode 4250, Average last 100 scores: 0.04, Episode Duration: 0.45, 
+    Episode 1700, Average last 100 scores: -0.00, Episode Duration: 2.12, 
     
-    Episode 4500, Average last 100 scores: 0.03, Episode Duration: 0.76, 
+    Episode 1800, Average last 100 scores: -0.00, Episode Duration: 2.13, 
     
-    Episode 4750, Average last 100 scores: 0.04, Episode Duration: 0.43, 
+    Episode 1900, Average last 100 scores: -0.00, Episode Duration: 2.20, 
     
-    Episode 5000, Average last 100 scores: 0.04, Episode Duration: 0.40, 
+    Episode 2000, Average last 100 scores: -0.00, Episode Duration: 2.16, 
     
-    Episode 5250, Average last 100 scores: 0.03, Episode Duration: 0.50, 
+    Episode 2100, Average last 100 scores: -0.00, Episode Duration: 2.17, 
     
-    Episode 5500, Average last 100 scores: 0.04, Episode Duration: 0.44, 
+    Episode 2200, Average last 100 scores: -0.00, Episode Duration: 2.38, 
     
-    Episode 5750, Average last 100 scores: 0.00, Episode Duration: 0.41, 
+    Episode 2300, Average last 100 scores: -0.00, Episode Duration: 2.18, 
     
-    Episode 6000, Average last 100 scores: -0.00, Episode Duration: 0.21, 
+    Episode 2400, Average last 100 scores: -0.00, Episode Duration: 2.25, 
     
-    Episode 6250, Average last 100 scores: -0.00, Episode Duration: 0.21, 
+    Episode 2500, Average last 100 scores: -0.00, Episode Duration: 2.20, 
     
-    Episode 6500, Average last 100 scores: -0.00, Episode Duration: 0.22, 
+    Episode 2600, Average last 100 scores: -0.00, Episode Duration: 2.19, 
     
-    Episode 6750, Average last 100 scores: -0.00, Episode Duration: 0.20, 
+    Episode 2700, Average last 100 scores: -0.00, Episode Duration: 2.28, 
     
-    Episode 7000, Average last 100 scores: -0.00, Episode Duration: 0.21, 
+    Episode 2800, Average last 100 scores: -0.00, Episode Duration: 2.22, 
     
-    Episode 7250, Average last 100 scores: -0.00, Episode Duration: 0.20, 
+    Episode 2900, Average last 100 scores: -0.00, Episode Duration: 2.19, 
     
-    Episode 7500, Average last 100 scores: -0.00, Episode Duration: 0.22, 
+    Episode 3000, Average last 100 scores: -0.00, Episode Duration: 2.27, 
     
-    Episode 7750, Average last 100 scores: -0.00, Episode Duration: 0.22, 
+    Episode 3100, Average last 100 scores: -0.00, Episode Duration: 2.42, 
     
-    Episode 8000, Average last 100 scores: -0.00, Episode Duration: 0.21, 
+    Episode 3200, Average last 100 scores: 0.00, Episode Duration: 2.33, 
     
-    Episode 8250, Average last 100 scores: -0.00, Episode Duration: 0.20, 
+    Episode 3300, Average last 100 scores: -0.00, Episode Duration: 2.25, 
     
-    Episode 8500, Average last 100 scores: -0.00, Episode Duration: 0.20, 
+    Episode 3400, Average last 100 scores: -0.00, Episode Duration: 2.36, 
     
-    Episode 8750, Average last 100 scores: -0.00, Episode Duration: 0.20, 
+    Episode 3500, Average last 100 scores: -0.00, Episode Duration: 2.25, 
     
-    Episode 9000, Average last 100 scores: -0.00, Episode Duration: 0.20, 
+    Episode 3600, Average last 100 scores: -0.00, Episode Duration: 2.27, 
     
-    Episode 9250, Average last 100 scores: 0.00, Episode Duration: 0.21, 
+    Episode 3700, Average last 100 scores: -0.00, Episode Duration: 2.29, 
     
-    Episode 9500, Average last 100 scores: -0.00, Episode Duration: 0.21, 
+    Episode 3800, Average last 100 scores: 0.01, Episode Duration: 2.30, 
     
-    Episode 9750, Average last 100 scores: -0.00, Episode Duration: 0.20, 
+    Episode 3900, Average last 100 scores: 0.02, Episode Duration: 3.80, 
     
-    Episode 10000, Average last 100 scores: -0.00, Episode Duration: 0.22, 
+    Episode 4000, Average last 100 scores: 0.03, Episode Duration: 4.61, 
     
     Closing envionment...
     
-    'train'  3046861.00 ms
+    'train'  9094048.72 ms
 ```    
 
 
 ## Results 
 
 ![png](output_12_0.png)
+
+The previous submission without the corrections of these one, I reached 10.000 because I still had GPU hours.  
+It looks like this time the tr
 
 
 ## Future Improvements  
